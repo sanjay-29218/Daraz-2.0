@@ -2,6 +2,7 @@ import React from "react";
 import { MdLocalMall } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
 import { BsFillPersonFill } from "react-icons/bs";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 type Props = {};
 
 const Sidebar = (props: Props) => {
@@ -11,10 +12,13 @@ const Sidebar = (props: Props) => {
         <a href="#flash"><MdLocalMall className="sidebar "/></a>
       </div>
       <div className="hover:after:content-['Categories'] flex items-center text-sm">
-        <a href={"#category"}><BiCategoryAlt className="sidebar " /></a>
+        <a href={"/Category"}><BiCategoryAlt className="sidebar " /></a>
       </div>
       <div className=" hover:after:content-['For_you'] flex items-center text-sm ">
         <a href="#forYou"><BsFillPersonFill className="sidebar" /></a>
+      </div>
+      <div className=" hover:after:content-['Store'] flex items-center text-sm ">
+        <a href="#forYou"><AiOutlineShoppingCart className="sidebar" /></a>
       </div>
     </div>
   );

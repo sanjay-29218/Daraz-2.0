@@ -11,7 +11,7 @@ const Main = (props: Props) => {
         {/* Flash sale */}
         <FlashSale/>
         {/* Categories */}
-        <Categories />
+        <Categories value={false} />
         {/* just for you */}
         <JustForYout/>
     </div>

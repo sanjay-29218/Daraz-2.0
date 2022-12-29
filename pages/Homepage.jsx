@@ -2,13 +2,12 @@ import Main from '../components/Main'
 import Head from 'next/head'
 import React from 'react'
 import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-type Props = {}
-
-const Homepage = (props: Props) => {
+import Navbardetail from '../components/Navbardetail'
+import Navbar from '../components/Navbar'
+import "react-toastify/dist/ReactToastify.css";
+const Homepage = (props) => {
   
-
   return (
     <>
       <Head>
@@ -16,9 +15,8 @@ const Homepage = (props: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
     <div className=' w-screen  bg-[#F5F5F5]'>
-      <header>
-      <Navbar/>
-      </header>
+      <Navbardetail/>
+      
       <main>
         <Main/>
       </main>

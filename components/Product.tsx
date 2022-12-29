@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
+import Cartsection from "../components/Cartsection";
 type Props = {
   id: number;
   name: string;
@@ -37,6 +38,7 @@ const Product = (props: Props) => {
             {Math.floor(discountPercentage(props.price, props.discountedPrice))}
             %
           </p>
+          <p>{props.store}</p>
         </div>
         <Stack spacing={1}>
           <Rating
@@ -46,7 +48,9 @@ const Product = (props: Props) => {
             readOnly
           />
         </Stack>
+        {/* <Cartsection/> */}
       </Link>
+      
     </div>
   );
 };
