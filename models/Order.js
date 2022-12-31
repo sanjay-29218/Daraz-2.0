@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const OrderSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    // user: { type: String, required: true },
+
     orderItems: [
       {
         name: { type: String, required: true },
@@ -18,7 +20,13 @@ const OrderSchema = new mongoose.Schema(
       postal: { type: String, required: true },
     },
     paymentMethod: { type: String, required: true },
-    paymentResult: { id: String, status: String, email_address: String },
+    paymentResult: {
+      id: String,
+      mobile: String,
+      token: String,
+      amount: Number,
+      widget_id: String,
+    },
     itemsPrice: { type: Number, required: true },
     deliveryFee: { type: Number, required: true },
     totalPrice: { type: Number, required: true },

@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 
 const Login = (props) => {
   const {data:session} = useSession();
+  console.log(session)
 
   const router = useRouter();
   const {redirect} = router.query;
@@ -44,11 +45,12 @@ const Login = (props) => {
     }
   }
   return (
-    <div className="bg-gray-200 h-screen">
+    <div className="bg-gray-200 h-screen ">
       <Navbardetail />
       <ToastContainer postion='bottom-center' limit={1} />
       <h1 className="text-center text-[3rem] font-light">Welcome to Daraz 2.0</h1>
-      <form action="" onSubmit={handleSubmit(SubmitHandler)}>
+     <div className="flex flex-col">
+     <form action="" onSubmit={handleSubmit(SubmitHandler)}>
         <section className="text-gray-600 body-font flex ">
           <div className="container px-5 py-3  flex flex-wrap items-center justify-center ">
             <div className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col  w-full mt-10 md:mt-0 ">
@@ -119,6 +121,10 @@ const Login = (props) => {
           </div>
         </section>
       </form>
+      <div>
+        <button onClick={()=>signIn('google',{callbackUrl:'/'})}>Login with Google</button>
+      </div>
+     </div>
     </div>
   );
 };

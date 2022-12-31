@@ -13,7 +13,8 @@ const handler = async(req,res) => {
     await db.connect();
     const newOrder = new Order({
         ...req.body,
-        user: user._id,
+        user:user._id,
+        // user: user.email,
     });
     const order = await newOrder.save();
     res.status(201).send(order);

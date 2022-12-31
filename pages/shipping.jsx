@@ -33,9 +33,7 @@ const ProductScreen = (props) => {
     getValues,
     control,
   } = useForm();
-  const submitHandler = (data) => {
-    console.log('hello')
-    console.log(data)
+  function submitHandler(data){
     dispatch({
       type: "SAVE_SHIPPING_ADDRESS",
       payload: {
@@ -208,7 +206,8 @@ const ProductScreen = (props) => {
             )}
           </div>
           <div className="mb-4 flex justify-between">
-            <button className="btn">Next</button>
+            <button className="btn" type="submit" >Next</button>
+            
           </div>
         </div>
       </form>

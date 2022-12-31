@@ -263,7 +263,7 @@ const Cart = (props) => {
         </div>
         <hr />
       </div>
-      <div className="  md:grid-cols-[70vw_20vw] relative ">
+      <div className="  md:grid md:grid-cols-[70vw_30vw]  ">
         <div className="grid grid-cols-1 ">
           {cart.cartItems.length !== 0 ? (
             stores.map((store) => (
@@ -404,9 +404,9 @@ const Cart = (props) => {
             </div>
           )}
         </div>
-        <div className=" md:h-[35vh] rounded-lg  bottom-0  md:m-[3rem]  md:p-4 gap-2  flex justify-end items-center md:flex-col md:w-[25vw] bg-white ">
-          <p className="hidden font-bold text-[1.5rem]">Order Summary</p>
-          <small className="hidden">Subtotal ( {total} ) items </small>
+        <div className=" md:h-[35vh] rounded-lg  bottom-0  md:m-[3rem]  md:p-4 gap-2   flex justify-end md:justify-between items-center md:flex-col md:w-[25vw] bg-white ">
+          <p className="hidden md:block font-bold text-[1.5rem]">Order Summary</p>
+          <small className="hidden md:block">Subtotal ( {total} ) items </small>
           <p className="font-bold">
             Total: <span className="text-[#ff7624]">Rs. {total}</span>
           </p>

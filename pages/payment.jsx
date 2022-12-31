@@ -36,14 +36,14 @@ export default function PaymentScreen() {
       return router.push('/shipping');
     }
     setSelectedPaymentMethod(paymentMethod || '');
-  }, [paymentMethod, router, shippingAddress.street]);
+  }, [paymentMethod, shippingAddress.street]);
 
   return (
     <div >
       <CheckoutWizard activeStep={2} />
       <form className="mx-auto max-w-screen-md" onSubmit={submitHandler}>
         <h1 className="mb-4 text-xl">Payment Method</h1>
-        {['esewa', 'khalti', 'CashOnDelivery'].map((payment) => (
+        {['Esewa', 'Khalti', 'CashOnDelivery'].map((payment) => (
           <div key={payment} className=" flex mb-4">
             <input
               name="paymentMethod"

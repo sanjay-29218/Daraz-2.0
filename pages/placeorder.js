@@ -30,6 +30,7 @@ const placeorder = () => {
   const {
     cart: { shippingAddress, paymentMethod, selectedCartItems },
   } = state;
+  console.log(state)
 
   // for handling store
 
@@ -77,7 +78,7 @@ const [loading, setLoading] = useState(false);
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/orders", {
+      const { data } = await axios.post("/api/orders/neworder", {
         orderItems: selectedCartItems,
         shippingAddress,
         paymentMethod,

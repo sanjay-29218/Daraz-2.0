@@ -89,11 +89,11 @@ const Navbardetail = (props:Props) => {
         {/*  login and signup part */}
         <div className="flex">
        
-            <div className=" hidden btn mx-[2rem] lg:block">
+            <div className=" hidden btn-img mx-[2rem] lg:block">
               {status === 'loading' ? ('Loading...') : 
               session?.user ? (
-                <div className="relative inline-block">
-                  <Dropdown session={session} href={{profile:'/profile',order:'/order-history',logout:'#'}} logoutCLickHandler={logoutCLickHandler}  />
+                <div className="relative  inline-block">
+                  <Dropdown session={session} href={{profile:'/profile',order:'/orderhistory',logout:'#'}} logoutCLickHandler={logoutCLickHandler}  />
                 </div>
               ) : (
                 <Link href="/Login">LogIn</Link>

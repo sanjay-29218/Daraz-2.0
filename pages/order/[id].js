@@ -12,6 +12,7 @@ import { data } from "autoprefixer";
 import Link from "next/link";
 import { Store } from "../../utils/store";
 import KhaltiCheckout from "khalti-checkout-web";
+import { mobileStepperClasses } from "@mui/material";
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -24,34 +25,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-let config = {
-    // replace this key with yours
-    "publicKey": "test_public_key_9554da7faed04c2ca62653e8dcbd1aea",
-    "productIdentity": "1234567890",
-    "productName": "Drogon",
-    "productUrl": `http://localhost:3000/orderhistory`,
-    "eventHandler": {
-        onSuccess (payload) {
-            if(payload){
-              // Router.push('/orderhistory');
-              // const { query } = useRouter();
-              // const orderRes = axios.put(`/pages/api/orders/${orderId}/pay`,payload);
-              // const orderId = query.id;
-
-            }
-        },
-        // onError handler is optional
-        onError (error) {
-            // handle errors
-            console.log(error);
-        },
-        onClose () {
-            console.log('widget is closing');
-        }
-    },
-    "paymentPreference": ["KHALTI", "EBANKING","MOBILE_BANKING", "CONNECT_IPS", "SCT"],
-};
-
 const OrderScreen = () => {
   const { query } = useRouter();
   const [stores, setStores] = useState([]);
@@ -75,12 +48,13 @@ const OrderScreen = () => {
     itemsPrice,
     totalPrice,
     updatedAt,
+    paidAt,
   } = order;
   useMemo(() => {
     const fetchOrder = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/orders/${orderId}`);
+        const { data } = await axios.get(`/api/orders/op/${orderId}`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
         let storesObj = handleStore(data);
         if (storesObj) {
@@ -94,7 +68,46 @@ const OrderScreen = () => {
     if (!order._id || (order._id && order._id !== orderId)) {
       let stores = fetchOrder().then((res) => setStores(res));
     }
-  }, [orderId]);
+  }, [orderId, order._id]);
+
+  // Khalti config file
+
+  let config = {
+    // replace this key with yours
+    publicKey: "test_public_key_9554da7faed04c2ca62653e8dcbd1aea",
+    productIdentity: "1234567890",
+    productName: "Drogon",
+    productUrl: `http://localhost:3000/orderhistory`,
+    eventHandler: {
+      onSuccess(payload) {
+        if (payload) {
+          // Router.push('/orderhistory');
+          const orderId = query.id;
+          const orderRes = axios.put(
+            `/api/orders/${orderId}/pay`,
+            payload
+          );
+          console.log(orderRes);
+          console.log(payload);
+        }
+      },
+      // onError handler is optional
+      onError(error) {
+        // handle errors
+        console.log(error);
+      },
+      onClose() {
+        console.log("widget is closing");
+      },
+    },
+    paymentPreference: [
+      "KHALTI",
+      "EBANKING",
+      "MOBILE_BANKING",
+      "CONNECT_IPS",
+      "SCT",
+    ],
+  };
 
   //   Handling store count
 
@@ -108,9 +121,22 @@ const OrderScreen = () => {
     );
     return storeCount;
   }
-  async function handlePlaceOrder() {
-    let checkout = new KhaltiCheckout(config);
-    checkout.show({amount: `${totalPrice*100}`});
+  async function handlePlaceOrder(paymentMethod) {
+    if(!isPaid&&paymentMethod==='Khalti'){
+      let checkout = new KhaltiCheckout(config);
+      checkout.show({ amount: totalPrice*100 });
+    }
+    else if(!isPaid&&paymentMethod==='Cash on Delivery'){
+      const orderId = query.id;
+      const orderRes = await axios.put(`/api/orders/${orderId}/pay`, {
+        amount: totalPrice,
+        paymentMethod: paymentMethod,
+      });
+      Router.push('/orderhistory');
+    }
+    else{
+      Router.push('/orderhistory');
+    }
   }
 
   return (
@@ -164,7 +190,44 @@ const OrderScreen = () => {
                 <div className="font-bold text-[#f85300]">
                   Total : {totalPrice}{" "}
                 </div>
-                <button className="p-2 w-full   bg-[#f85300]" onClick={handlePlaceOrder}>Pay With {paymentMethod}</button>
+                {
+                  (paymentMethod === 'Khalti' && !isPaid)?(
+                    <button
+                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
+                    onClick={()=>{handlePlaceOrder(paymentMethod)}}
+                  >
+                    
+                    Pay with Khalti
+                  </button>
+                  ):(paymentMethod==='Esewa'&& !isPaid)?(
+                    <button
+                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
+                    onClick={()=>{handlePlaceOrder(paymentMethod)}}
+                  >
+                    Pay with Esewa
+
+                  </button>
+
+                  ):(paymentMethod==='CashOnDelivery'&&!isPaid)?(
+                    <button
+                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
+                    onClick={()=>{handlePlaceOrder(paymentMethod)}}
+                  >
+                    Pay After Delivery
+
+                  </button>
+
+                  ):(
+                    <button
+                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
+                    onClick={()=>{router.push('/orderhistory')}}
+                  >
+                    Go to the Order History
+
+                  </button>
+                  )
+              }
+      
               </div>
 
               <div className="grid grid-cols-1   ">
