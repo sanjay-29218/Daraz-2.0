@@ -113,6 +113,7 @@ const Cart = (props) => {
       handleTotal();
     } else {
       let allcheckboxes = document.querySelectorAll('input[type="checkbox"]');
+
       allcheckboxes.forEach((checkbox) => {
         checkbox.checked = false;
       });
@@ -135,9 +136,13 @@ const Cart = (props) => {
         .forEach((checkbox) => {
           checkbox.checked = true;
         });
+
       handlePrimaryTotal(item, true);
     } else {
       mainCheckbox.checked = false;
+      document.querySelectorAll(`input[name="${item}"]`).forEach((checkbox) => {
+        checkbox.checked = false;
+      });
       document.querySelectorAll(`input[name="${item}"]`).forEach((checkbox) => {
         checkbox.checked = false;
       });
@@ -213,20 +218,6 @@ const Cart = (props) => {
 
     dispatch({ type: "CART_ADD_ITEM", payload: { ...item, qty } });
   };
-  // const democheck = () =>{
-  //   let checkbox1 = document.querySelector('#check1');
-  //   let checkbox = document.querySelector('#check');
-
-  //   console.log("checkbox1:",checkbox1.checked,"checkbox:",checkbox.checked)
-  // }
-  // const democheck1 = () =>{
-  //   let checkbox1 = document.querySelector('#check1');
-  //   let checkbox = document.querySelector('#check');
-  //   checkbox.checked = true;
-  //   console.log("checkbox1:",checkbox1.checked,"checkbox:",checkbox.checked)
-  // }
-
-  // Filtering the cart items on basis of store
 
   useEffect(() => {
     dispatch({ type: "CART_RESET_SELECTED_ITEMS" });
@@ -266,21 +257,13 @@ const Cart = (props) => {
       <div className="  md:grid md:grid-cols-[70vw_30vw]  ">
         <div className="grid grid-cols-1 ">
           {cart.cartItems.length !== 0 ? (
-            stores.map((store) => (
-              <div className="h-fit">
+            stores.map((store, i) => (
+              <div key={i} className="h-fit">
                 <div className="flex gap-2 p-4">
-                  <input
-                    type="radio"
-                    name="store"
-                    id={`${store}`}
-                    className="md:hidden"
-                  />
-
                   <input
                     type="checkbox"
                     name="store"
                     id={store}
-                    className="hidden md:block"
                     onChange={() => {
                       handlePrimaryCheckbox(store);
                     }}
@@ -290,22 +273,14 @@ const Cart = (props) => {
                 {cart.cartItems.map((storeitem, i) => {
                   if (storeitem.store === store) {
                     return (
-                      <div key={storeitem.id}>
+                      <div key={storeitem._id}>
                         <hr />
 
                         <div className="md:grid md:grid-cols-[10px_1fr_1fr_20px] flex gap-3 grid-rows-1 md:gap-2 md:p-4 items-center">
                           <input
-                            type="radio"
-                            name={store}
-                            id={`${storeitem.slug}`}
-                            className="md:hidden"
-                          />
-
-                          <input
                             type="checkbox"
                             name={store}
                             id={storeitem.slug}
-                            className="hidden md:block"
                             onChange={() => {
                               handleSecondaryCheckbox(
                                 storeitem.slug,
@@ -404,8 +379,10 @@ const Cart = (props) => {
             </div>
           )}
         </div>
-        <div className=" md:h-[35vh] rounded-lg  bottom-0  md:m-[3rem]  md:p-4 gap-2   flex justify-end md:justify-between items-center md:flex-col md:w-[25vw] bg-white ">
-          <p className="hidden md:block font-bold text-[1.5rem]">Order Summary</p>
+        <div className=" fixed bottom-12 md:relative w-full md:h-[35vh] rounded-lg md:m-[3rem]  md:p-4 gap-2   flex justify-end md:justify-between items-center md:flex-col md:w-[25vw] bg-white ">
+          <p className="hidden md:block font-bold text-[1.5rem]">
+            Order Summary
+          </p>
           <small className="hidden md:block">Subtotal ( {total} ) items </small>
           <p className="font-bold">
             Total: <span className="text-[#ff7624]">Rs. {total}</span>

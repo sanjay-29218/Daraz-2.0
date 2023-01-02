@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-
 import data from "../utils/flashdata";
 const Categories = ({ value }) => {
   const res = () => {
@@ -19,9 +18,7 @@ const Categories = ({ value }) => {
     return finalCategory;
   };
   const final = res();
-  // console.log(final)
-  // shirts
-  // console.log(uniqueCategory)
+  
 
   {
     return value === true ? (

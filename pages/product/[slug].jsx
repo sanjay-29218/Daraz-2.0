@@ -8,9 +8,33 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Navbardetail from "../../components/Navbardetail";
 import Product from "../../models/Product";
+import {FiArrowRight} from "react-icons/fi";
 import db from "../../utils/db";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Store } from "../../utils/store";
+import axios from "axios";
+import { useContext } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
 const ProductDetails = ({ product }) => {
+  const { state, dispatch } = useContext(Store);
+
+  const addToCartHandler = async (product) => {
+    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
+    const data = await axios.get(`/api/products/${product._id}`);
+    console.log(data);
+    const qty = existItem ? existItem.qty + 1 : 1;
+
+    if (product.countInStock < qty) {
+      return toast.error("Sorry, Product is out of stock");
+    } else {
+      // const qty = existItem ? existItem.qty + 1 : 1;
+      toast.success("Product added to cart");
+      dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
+    }
+  };
+
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -46,13 +70,10 @@ const ProductDetails = ({ product }) => {
             />
           </div>
         </div>
-        {/* product details */}
         <div className="flex-col h-full  gap-5 justify-center bg-white items-center pt-2 md:p-4 ">
           <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
             {product.description}
           </p>
-
-          
           {/* product raing */}
           <span className="flex  justify-center gap-1 py-2 md:hidden   ">
             <FcRating className="text-[2rem]" />
@@ -61,7 +82,14 @@ const ProductDetails = ({ product }) => {
           {/* detail description */}
           <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[4rem] border rounded-lg  flex flex-col  py-[2rem]">
             <hr className="h-10px text-red-50" />
-            <p>{product.store}</p>
+            <Link href={"/store"}>
+           <div className="flex items-center">
+           
+           <div className="">{product.store}</div>
+           <FiArrowRight/>
+           </div>
+            </Link>
+            
             <div className="flex flex-col ">
               {/* product raing for medium */}
               <div className="md:flex hidden   ">
@@ -104,7 +132,10 @@ const ProductDetails = ({ product }) => {
                 </Box>
               </div>
               <section className="hidden md:block">
-                <Cartsection product={product} />
+                <Cartsection
+                  product={product}
+                  addToCartHandler={addToCartHandler}
+                />
               </section>
             </div>
           </div>
@@ -113,13 +144,13 @@ const ProductDetails = ({ product }) => {
         <div className=" hidden "></div>
       </div>
       <section className="md:hidden">
-        <Cartsection product={product} />
+        <Cartsection product={product} addToCartHandler={addToCartHandler} />
       </section>
     </div>
   );
 };
 
-export default ProductDetails;
+export default dynamic(() => Promise.resolve(ProductDetails), { ssr: false });
 
 export const getServerSideProps = async (context) => {
   const { params } = context;

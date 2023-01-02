@@ -30,28 +30,28 @@ const orderhistory = () => {
 
   return (
     <div>
-      <Navbardetail/>
+      <Navbardetail isHome/>
       {orders.length > 0 ? (
-        <div>
+        <div className="text-sm">
             <table className="min-w-full">
           <thead className="border-b">
               <tr>
-                <th className="px-5 text-left">ID</th>
-                <th className="p-5 text-left">DATE</th>
-                <th className="p-5 text-left">TOTAL</th>
-                <th className="p-5 text-left">PAID</th>
-                <th className="p-5 text-left">DELIVERED</th>
-                <th className="p-5 text-left">ACTION</th>
+                <th className="md:px-5 text-left">ID</th>
+                <th className="md:p-5 text-left">DATE</th>
+                <th className="md:p-5 text-left">TOTAL</th>
+                <th className="md:p-5 text-left">PAID</th>
+                <th className="md:p-5 text-left">DELIVERED</th>
+                <th className="md:p-5 text-left">ACTION</th>
               </tr>
             </thead>
             <tbody>
             {orders.map((order) => (
                 
                 <tr key={order._id} className="border-b">
-                <td className=" p-5 ">{order._id.substring(20, 24)}</td>
-                <td className=" p-5 ">{order.createdAt.substring(0, 10)}</td>
-                <td className=" p-5 ">${order.totalPrice}</td>
-                <td className=" p-5 ">
+                <td className=" md:p-5 ">{order._id.substring(20, 24)}</td>
+                <td className=" md:p-5 ">{order.createdAt.substring(0, 10)}</td>
+                <td className=" md:p-5 ">${order.totalPrice}</td>
+                <td className=" md:p-5 ">
                   {order.isPaid
                     ? `${order.paidAt.substring(0, 10)}`
                     : 'not paid'}
@@ -63,7 +63,7 @@ const orderhistory = () => {
                 </td>
                 <td className=" p-5 ">
                   <Link href={`/order/${order._id}`} passHref>
-                    <div>Details</div>
+                    <div className="btn">Details</div>
                   </Link>
                 </td>
               </tr>

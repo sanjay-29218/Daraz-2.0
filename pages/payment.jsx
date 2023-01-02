@@ -5,8 +5,11 @@ import Cookies from 'js-cookie';
 import CheckoutWizard from '../components/CheckoutWizard';
 import { Store } from '../utils/store';
 
+
+
 // import toastcontainer
 import { ToastContainer } from 'react-toastify';
+import Navbardetail from '../components/Navbardetail';
 export default function PaymentScreen() {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const { state, dispatch } = useContext(Store);
@@ -39,11 +42,13 @@ export default function PaymentScreen() {
   }, [paymentMethod, shippingAddress.street]);
 
   return (
-    <div >
+    <div  >
+      <ToastContainer/>
+      <Navbardetail isHome/>
       <CheckoutWizard activeStep={2} />
-      <form className="mx-auto max-w-screen-md" onSubmit={submitHandler}>
+      <form className="mx-auto p-3 max-w-screen-md" onSubmit={submitHandler}>
         <h1 className="mb-4 text-xl">Payment Method</h1>
-        {['Esewa', 'Khalti', 'CashOnDelivery'].map((payment) => (
+        {[ 'Khalti', 'CashOnDelivery'].map((payment) => (
           <div key={payment} className=" flex mb-4">
             <input
               name="paymentMethod"
@@ -64,11 +69,11 @@ export default function PaymentScreen() {
           <button
             onClick={() => router.push('/shipping')}
             type="button"
-            className="default-button"
+            className="btn"
           >
             Back
           </button>
-          <button className="primary-button">Next</button>
+          <button className="btn">Next</button>
         </div>
       </form>
       <ToastContainer/>

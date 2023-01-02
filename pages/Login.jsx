@@ -48,7 +48,7 @@ const Login = (props) => {
     <div className="bg-gray-200 h-screen ">
       <Navbardetail />
       <ToastContainer postion='bottom-center' limit={1} />
-      <h1 className="text-center text-[3rem] font-light">Welcome to Daraz 2.0</h1>
+      <h1 className="text-center text-[3rem] font-light">Welcome </h1>
      <div className="flex flex-col">
      <form action="" onSubmit={handleSubmit(SubmitHandler)}>
         <section className="text-gray-600 body-font flex ">
@@ -96,13 +96,13 @@ const Login = (props) => {
                   className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   {...register("password", {
                     required: "Please enter your password",
-                    // pattern:
-                      // {
-                        // value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/,
+                    pattern:
+                      {
+                        value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/,
                         
 
-                      //   message:"Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
-                      // }
+                        message:"Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
+                      },
                       minLength:3
                   })}
                 />
@@ -115,7 +115,7 @@ const Login = (props) => {
               </button>
               <p className="text-xs text-gray-500 mt-3">
                 Don&apos;t have an account &#63;{" "}
-                <Link href="/signup">Sign Up</Link>
+                <Link href={`/signup?redirect=${redirect||'/'}`}>Sign Up</Link>
               </p>
             </div>
           </div>

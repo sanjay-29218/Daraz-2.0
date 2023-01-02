@@ -83,10 +83,7 @@ const OrderScreen = () => {
         if (payload) {
           // Router.push('/orderhistory');
           const orderId = query.id;
-          const orderRes = axios.put(
-            `/api/orders/${orderId}/pay`,
-            payload
-          );
+          const orderRes = axios.put(`/api/orders/${orderId}/pay`, payload);
           console.log(orderRes);
           console.log(payload);
         }
@@ -122,21 +119,19 @@ const OrderScreen = () => {
     return storeCount;
   }
   async function handlePlaceOrder(paymentMethod) {
-    if(!isPaid&&paymentMethod==='Khalti'){
+    if (!isPaid && paymentMethod === "Khalti") {
       let checkout = new KhaltiCheckout(config);
-      checkout.show({ amount: totalPrice*100 });
-      Router.push('/orderhistory');
-    }
-    else if(!isPaid&&paymentMethod==='Cash on Delivery'){
+      checkout.show({ amount: totalPrice * 100 });
+      Router.push("/orderhistory");
+    } else if (!isPaid && paymentMethod === "Cash on Delivery") {
       const orderId = query.id;
       const orderRes = await axios.put(`/api/orders/${orderId}/pay`, {
         amount: totalPrice,
         paymentMethod: paymentMethod,
       });
-      Router.push('/orderhistory');
-    }
-    else{
-      Router.push('/orderhistory');
+      Router.push("/orderhistory");
+    } else {
+      Router.push("/orderhistory");
     }
   }
 
@@ -160,7 +155,9 @@ const OrderScreen = () => {
                 </p>
               </div>
               <div className="md:grid-item flex md:relative shadow-md fixed bottom-0 w-full justify-between items-center md:h-[20rem] md:grid gap-3 bg-white ">
-                <div className="hidden md:block font-bold mb-2">Order Summary </div>
+                <div className="hidden md:block font-bold mb-2">
+                  Order Summary{" "}
+                </div>
                 <hr />
                 <p className="md:flex gap-[2rem] hidden  items-center justify-between font-bold">
                   Payment Method : {paymentMethod}
@@ -173,8 +170,12 @@ const OrderScreen = () => {
                   )}
                 </p>
 
-                <div className="font-bold md:block hidden">Items Total :{itemsPrice}</div>
-                <div className="font-bold md:block hidden">Delivery Fee :{deliveryFee}</div>
+                <div className="font-bold md:block hidden">
+                  Items Total :{itemsPrice}
+                </div>
+                <div className="font-bold md:block hidden">
+                  Delivery Fee :{deliveryFee}
+                </div>
                 <div className="font-bold md:flex hidden  justify-between gap-[2rem]">
                   Total Payment :{totalPrice}
                   {isDelivered ? (
@@ -191,44 +192,14 @@ const OrderScreen = () => {
                 <div className="font-bold text-[#f85300]">
                   Total : {totalPrice}{" "}
                 </div>
-                {
-                  (paymentMethod === 'Khalti' && !isPaid)?(
-                    <button
-                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
-                    onClick={()=>{handlePlaceOrder(paymentMethod)}}
-                  >
-                    
-                    Pay with Khalti
-                  </button>
-                  ):(paymentMethod==='Esewa'&& !isPaid)?(
-                    <button
-                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
-                    onClick={()=>{handlePlaceOrder(paymentMethod)}}
-                  >
-                    Pay with Esewa
-
-                  </button>
-
-                  ):(paymentMethod==='CashOnDelivery'&&!isPaid)?(
-                    <button
-                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
-                    onClick={()=>{handlePlaceOrder(paymentMethod)}}
-                  >
-                    Pay After Delivery
-
-                  </button>
-
-                  ):(
-                    <button
-                    className="bg-[#f85300] text-white font-bold p-2 rounded-md"
-                    onClick={()=>{router.push('/orderhistory')}}
-                  >
-                    Go to the Order History
-
-                  </button>
-                  )
-              }
-      
+                <button
+                  className="bg-[#f85300] text-white font-bold p-2 rounded-md"
+                  onClick={() => {
+                    router.push("/sellerorder");
+                  }}
+                >
+                  Go to the Order History
+                </button>
               </div>
 
               <div className="grid grid-cols-1   ">

@@ -20,7 +20,6 @@ let country = [
 
 const ProductScreen = (props) => {
   const router = useRouter();
-  const [countryValue, setCountryValue] = useState(null);
   const {state,dispatch} = useContext(Store); 
   const {cart} = state;
   const {shippingAddress} = cart;
@@ -30,8 +29,7 @@ const ProductScreen = (props) => {
     register,
     formState: { errors },
     setValue,
-    getValues,
-    control,
+
   } = useForm();
   function submitHandler(data){
     dispatch({
@@ -42,7 +40,6 @@ const ProductScreen = (props) => {
         postal: data.postal,
         city: data.city,
         street: data.street,
-        // country: countryValue,
       },
     });
     Cookies.set('cart',JSON.stringify({
@@ -60,6 +57,8 @@ const ProductScreen = (props) => {
     console.log("shippingAddress", shippingAddress);
   };
     
+   
+
     useEffect(()=>{
       setValue("fullname",shippingAddress?.fullname);
       setValue("mobile",shippingAddress?.mobile);
@@ -69,17 +68,14 @@ const ProductScreen = (props) => {
       // setValue("country",countryValue);
 
     },[])
-    const onChange = (event) => {
-      setValue(event.target.name, event.target.value);
-    }
     // router.push("/payment");
   return (
     <div>
-      <Navbardetail/>
+      <Navbardetail isHome/>
       <CheckOutWizard activeStep={1}></CheckOutWizard>
       <form
         action=""
-        className="mx-auto max-w-screen-md"
+        className="mx-auto max-w-screen-md p-4"
         onSubmit={handleSubmit(submitHandler)}
       >
         <h1 className="mb-4 text-xl">Shipping Address</h1>
