@@ -33,7 +33,7 @@ const ProductScreen = (props) => {
   } = useForm();
   function submitHandler(data){
     dispatch({
-      type: "SAVE_SHIPPING_ADDRESS",
+      type: "CART_SAVE_SHIPPING_ADDRESS",
       payload: {
         fullname: data.fullname,
         mobile: data.mobile,

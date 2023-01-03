@@ -11,10 +11,10 @@ import Product from "../models/Product";
 import db from "../utils/db";
 import Link from "next/link";
 import { Rating, Stack } from "@mui/material";
+import User from "../models/User";
 
 const seller = ({ store, products }) => {
   const { status, data: session } = useSession();
-  const [refresh, setRefresh] = useState(false);
   const user = session.user;
  
   const router = useRouter();
@@ -37,7 +37,7 @@ const seller = ({ store, products }) => {
       city: data.city,
       street: data.street,
     });
-    setRefresh(!refresh)
+    router.reload()
     
   }
   const handelAddProduct = () => {
@@ -229,7 +229,7 @@ const seller = ({ store, products }) => {
             </div>
           ))}
           <button
-            className="w-[20rem] h-[20rem] text-[5rem] cursor-pointer text-xl bg-slate-100 hover:bg-slate-300"
+            className="w-[20rem]  text-[5rem] cursor-pointer text-xl bg-slate-100 hover:bg-slate-300"
             onClick={() => {
               handelAddProduct();
             }}
@@ -246,7 +246,7 @@ export default seller;
 seller.auth = true;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const user = session?.user;
+  const user = await User.findOne({ email: session.user.email }).lean();  
   await db.connect();
   const store = await Seller.findOne({ user: user._id }).lean();
   let products;

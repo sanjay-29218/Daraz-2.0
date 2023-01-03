@@ -37,8 +37,7 @@ const search = ({store,products}) => {
  {products.map((product) => {
            if(product.store!==store.store)
            {
-             return
-             <ProductBox
+             return <ProductBox
                key={product.id}
                product={product}
                addToCartHandler={addToCartHandler}

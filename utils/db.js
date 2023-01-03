@@ -45,6 +45,9 @@ if(doc._id){
   if(doc.updatedAt){
   doc.updatedAt = doc.updatedAt.toString();
   }
+  if(doc.product){
+  doc.product = doc.product.toString();
+  }
   return doc;
 }
 

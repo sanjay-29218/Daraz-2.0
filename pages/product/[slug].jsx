@@ -1,8 +1,7 @@
 import ReactImageMagnify from "react-image-magnify";
 import { useRouter } from "next/router";
-import React from "react";
+import React,{useState} from "react";
 import Cartsection from "../../components/Cartsection";
-import Rating from "@mui/material/Rating";
 import { FcRating } from "react-icons/fc";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -17,13 +16,23 @@ import axios from "axios";
 import { useContext } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-const ProductDetails = ({ product }) => {
+import User from "../../models/User";
+import { getSession } from "next-auth/react";
+import RatingM from '../../models/Rating'
+import { Rating } from "@mui/material";
+import { useEffect } from "react";
+const ProductDetails = ({ product,rating,user}) => {
   const { state, dispatch } = useContext(Store);
+  const [productRating,setProductRating] = useState(rating.rating);
 
+
+
+  // Handling the add to cart functionality
   const addToCartHandler = async (product) => {
+    
     const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
     const data = await axios.get(`/api/products/${product._id}`);
-    console.log(data);
+
     const qty = existItem ? existItem.qty + 1 : 1;
 
     if (product.countInStock < qty) {
@@ -34,17 +43,53 @@ const ProductDetails = ({ product }) => {
       dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
     }
   };
+  useEffect(() => {
+    if (productRating) {
+      setProductRating(rating.rating);
+      }
+      }, [rating]);
+
+  async function handleRating(newValue){
+    if(rating){
+      const {data} = await axios.put(`/api/rating/rating`,{
+        ratingid:rating._id,
+        rating:newValue
+      })
+      const {productres} = await axios.put(`/api/products/updaterating/updaterating`,{
+        ratingid:rating._id,
+        productid:product._id,
+        rating:newValue
+      })
+      console.log(productres)
+      setProductRating(data.rating)
+    }
+    else{
+      const {data} = await axios.post(`/api/rating/rating`,{
+        rating:newValue,
+        productid:product._id,
+        userid:user._id
+      })
+      const {productres} = await axios.put(`/api/products/updaterating`,{
+        productid:product._id,
+        rating:newValue
+      })
+    setProductRating(newValue)
+    
+  }
+
+
 
   if (!product) {
     return <div>Product not found</div>;
   }
+}
   const discountPercentage = (price, discountedPrice) => {
     return ((price - discountedPrice) / price) * 100;
   };
   return (
     <div className="h-screen   bg-gray-50 ">
       <Navbardetail isHome={true} />
-      <div className="md:grid md:grid-cols-3 gird grid-rows-2 ">
+      <div className="md:grid md:grid-cols-3  gird grid-rows-1 ">
         {/* image part */}
         <div className="p-10 col-span-1  bg-white">
           <div className="fluid__image-container">
@@ -78,6 +123,7 @@ const ProductDetails = ({ product }) => {
           <span className="flex  justify-center gap-1 py-2 md:hidden   ">
             <FcRating className="text-[2rem]" />
             {product.rating}/5
+
           </span>
           {/* detail description */}
           <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[4rem] border rounded-lg  flex flex-col  py-[2rem]">
@@ -141,7 +187,31 @@ const ProductDetails = ({ product }) => {
           </div>
         </div>
 
-        <div className=" hidden "></div>
+        <div className=" bg-white ml-5 p-4 ">
+          {rating?(
+            <p className="flex items-center text-[2rem]">Rating: <Rating
+            name="half-rating-read"
+            defaultValue={0}
+            precision={1}
+            value={productRating}
+            onChange={(event, newValue) => {
+              handleRating(newValue);
+            }}
+          /></p>
+          ):(
+            <p className="flex items-center text-[2rem]">Rating: <Rating
+            name="half-rating-read"
+            defaultValue={0}
+            precision={0.5}
+            value={0}
+            onChange={(event, newValue) => {
+              handleRating(newValue);
+            }}
+          /></p>
+
+          )}
+          <p>Comments</p>
+        </div>
       </div>
       <section className="md:hidden">
         <Cartsection product={product} addToCartHandler={addToCartHandler} />
@@ -155,12 +225,18 @@ export default dynamic(() => Promise.resolve(ProductDetails), { ssr: false });
 export const getServerSideProps = async (context) => {
   const { params } = context;
   const { slug } = params;
+  const session = await getSession(context);
   await db.connect();
   const product = await Product.findOne({ slug: slug }).lean();
+  const user = await User.findOne({ email: session.user.email }).lean();
+  const rating= await RatingM.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
   await db.disconnect();
   return {
     props: {
+      user: user ? db.convertDocToObj(user) : null,
       product: product ? db.convertDocToObj(product) : null,
+      rating:rating?db.convertDocToObj(rating):null
+      
     },
   };
 };

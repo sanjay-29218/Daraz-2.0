@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Navbardetail from "../components/Navbardetail";
 import Seller from "../models/Seller";
+import User from "../models/User";
 import db from "../utils/db";
 
 const sellerorder = ({ store }) => {
@@ -80,7 +81,7 @@ export default sellerorder;
 sellerorder.auth = true;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const user = session?.user;
+  const user = await User.findOne({ email: session.user.email }).lean();  
   await db.connect();
   const store = await Seller.findOne({ user: user._id }).lean();
 

@@ -18,7 +18,8 @@ const FlashSale = ({products,store,addToCartHandler}) => {
         
       >
         {products.map((product) => {
-           if(product.store!==store.store)
+           if(store){
+            if(product.store!==store.store)
            {
              return <SwiperSlide key={product.id}>
              <ProductBox
@@ -28,6 +29,16 @@ const FlashSale = ({products,store,addToCartHandler}) => {
              />
            </SwiperSlide>
            }
+           }
+           
+           return <SwiperSlide key={product.id}>
+           <ProductBox
+             key={product.id}
+             product={product}
+             addToCartHandler={addToCartHandler}
+           />
+         </SwiperSlide>
+
          
 })}
       </Swiper>

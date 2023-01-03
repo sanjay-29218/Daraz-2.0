@@ -23,14 +23,16 @@ import "react-toastify/dist/ReactToastify.css";
 import CheckOutWizard from "../components/CheckOutWizard";
 import { getError } from "../utils/error";
 import axios from "axios";
-
+import { useSession } from "next-auth/react";
 const placeorder = () => {
   const router = useRouter();
+  const {status,data:session} = useSession();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { shippingAddress, paymentMethod, selectedCartItems },
   } = state;
   console.log(state)
+  console.log(session)
 
   // for handling store
 
@@ -59,6 +61,7 @@ const placeorder = () => {
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   
   const handleSummary = () => {
+    
     let summary = {total:0, deliveryFee:0,totalqty:0,itemsTotal:0};
     selectedCartItems.forEach((item) => {
       summary.itemsTotal += item.price * item.qty;
@@ -198,3 +201,7 @@ const [loading, setLoading] = useState(false);
 
 export default dynamic(() => Promise.resolve(placeorder), { ssr: false });
 placeorder.auth = true;
+export async function getServersideProps(context) {
+  const session = await getSession(context);
+  return { props: {} };
+}

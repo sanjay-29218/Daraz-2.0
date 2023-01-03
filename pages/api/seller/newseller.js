@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/react";
 import Seller from "../../../models/Seller";
+import User from "../../../models/User";
 import db from "../../../utils/db";
 
 const handler = async (req,res) =>{
@@ -9,9 +10,10 @@ const handler = async (req,res) =>{
         return;
     }
     await db.connect();
+    const user = await User.findOne({email:session.user.email});
     const newseller = await Seller({
         ...req.body,
-        user:session.user._id,
+        user:user._id,
 
     })
     const seller = await newseller.save();

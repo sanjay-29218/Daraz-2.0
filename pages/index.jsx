@@ -70,7 +70,10 @@ export async function getServerSideProps(context) {
   const user = session?.user;
   await db.connect();
   const products = await Product.find().lean();
-  const store = await Seller.findOne({ user: user._id }).lean();
+  let store;
+  if(session){
+    const store = await Seller.findOne({ user: user._id }).lean();
+  }
   return {
     props: {
       products: products.map(db.convertDocToObj),

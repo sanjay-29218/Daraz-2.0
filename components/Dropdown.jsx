@@ -9,8 +9,13 @@ export default function Example({session,href,logoutCLickHandler}) {
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center rounded-md   text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-            {session.user.name}
-            {/* <img src={session.user.image} className='rounded-full h-7' alt="..." /> */}
+            {session.user.image ? (
+              console.log(session.user.image),
+            <img src={session.user.image} className='rounded-full h-7' alt="..." />
+            ) : (
+              <p>{session.user.name}</p>
+            )}
+            
             <ChevronDownIcon
               className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
               aria-hidden="true"
