@@ -6,14 +6,14 @@ import Navbardetail from "../components/Navbardetail";
 import { useRouter } from "next/router";
 import { getSession, useSession } from "next-auth/react";
 import axios from "axios";
-import Seller from "../models/Seller";
+import SellerM from "../models/Seller";
 import Product from "../models/Product";
 import db from "../utils/db";
 import Link from "next/link";
 import { Rating, Stack } from "@mui/material";
 import User from "../models/User";
 
-const seller = ({ store, products }) => {
+const Seller = ({ store, products }) => {
   const { status, data: session } = useSession();
   const user = session.user;
  
@@ -242,13 +242,13 @@ const seller = ({ store, products }) => {
     </div>
   );
 };
-export default seller;
-seller.auth = true;
+export default Seller;
+Seller.auth = true;
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   const user = await User.findOne({ email: session.user.email }).lean();  
   await db.connect();
-  const store = await Seller.findOne({ user: user._id }).lean();
+  const store = await SellerM.findOne({ user: user._id }).lean();
   let products;
   if(store){
      products = await Product.find({ store: store.store }).lean();

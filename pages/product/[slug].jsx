@@ -58,34 +58,39 @@ const ProductDetails = ({ product,rating,user,comments}) => {
       }, [rating,product,comments]);
 
   async function handleRating(newValue){
-    if(rating){
-      const {data} = await axios.put(`/api/rating/updaterating`,{
-        ratingid:rating._id,
-        rating:newValue
-      })
-      const {productres} = await axios.put(`/api/rating/updateallrating`,{
-        ratingid:rating._id,
-        productid:product._id,
-        rating:newValue
-      })
-      console.log(productres,data)
-      setProductRating(newValue)
-    }
-    else{
-      console.log(product._id,user._id)
-      const {data} = await axios.post(`/api/rating/newrating`,{
-        rating:newValue,
-        productid:product._id,
-        userid:user._id
-      })
-      const {productres} = await axios.put(`/api/rating/updateallrating`,{
-        productid:product._id,
-        rating:newValue
-      })
-    setProductRating(newValue)
-  }
+    if(!session){
+      return toast.error("Please login to give rating")
 
-  
+    }else{
+      if(rating){
+        const {data} = await axios.put(`/api/rating/updaterating`,{
+          ratingid:rating._id,
+          rating:newValue
+        })
+        const {productres} = await axios.put(`/api/rating/updateallrating`,{
+          ratingid:rating._id,
+          productid:product._id,
+          rating:newValue
+        })
+        console.log(productres,data)
+        setProductRating(newValue)
+        toast.success("Rating updated successfully")
+      }
+      else{
+        console.log(product._id,user._id)
+        const {data} = await axios.post(`/api/rating/newrating`,{
+          rating:newValue,
+          productid:product._id,
+          userid:user._id
+        })
+        const {productres} = await axios.put(`/api/rating/updateallrating`,{
+          productid:product._id,
+          rating:newValue
+        })
+      setProductRating(newValue)
+      toast.success("Rating added successfully")
+    }
+    }
 
   if (product===null) {
     return <div>Product not found</div>;
@@ -94,15 +99,21 @@ const ProductDetails = ({ product,rating,user,comments}) => {
 
 async function handleComment(e){
   // e.preventDefault();
-  const comment = com.current.value;
-  console.log(comment)
-  const {commentdata} = await axios.post(`/api/comment/newcomment`,{
-    comment:comment,
-    productid:product._id,
-    userid:user._id
-  })
-  setAllComment([...allcomment,{comment:comment}])
-  setComment("")
+ if(!session){
+    return toast.error("Please login to give comment")
+ }
+  else{
+    const comment = com.current.value;
+    console.log(comment)
+    const {commentdata} = await axios.post(`/api/comment/newcomment`,{
+      comment:comment,
+      productid:product._id,
+      userid:user._id
+    })
+    setAllComment([...allcomment,{comment:comment}])
+    setComment("")
+    toast.success("Comment added successfully")
+  }
 }
 
 
@@ -240,7 +251,7 @@ async function handleComment(e){
            <div className=" h-[10rem] overflow-scroll  bg-slate-100 p-4 flex flex-col gap-5">
            {allcomment?(
             allcomment.map((comment)=>(
-              <div >
+              <div key={comment._id}>
                 
                 <p>{comment.comment}</p>
                 <hr className=" border-1 border-gray-500" />

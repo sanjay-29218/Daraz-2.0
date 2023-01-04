@@ -30,7 +30,7 @@ const Categories = ({ value }) => {
         <div className="flex items-center justify-center flex-wrap gap-2">
           {final.map((item, i) => {
             return (
-              <div className="bg-white p-2">
+              <div key={i} className="bg-white p-2">
                 <div
                   key={i}
                   className=" w-[8rem] md:w-[15rem] text-center hover:shadow-md "

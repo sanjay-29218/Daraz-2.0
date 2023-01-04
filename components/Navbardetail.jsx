@@ -27,11 +27,13 @@ const Navbardetail = (props) => {
     signOut({ callbackUrl: "/Login" });
   };
   const handleSearch = ()=>{
-    router.push(`/search?search=${search}`);
+    router.push(`/Search?search=${search}`);
   }
   const onChangeHandler = (e) => {
     setSearch(e.target.value);
     
+
+
   };
 
   return (
@@ -149,8 +151,8 @@ const Navbardetail = (props) => {
           >
             All Categories
           </option>
-          <option value="">Women's Fashion</option>
-          <option value="">Men's Fashion</option>
+          <option value="">Women&aposs; Fashion</option>
+          <option value="">Men&apos;s Fashion</option>
         </select>
       </div>
     </div>

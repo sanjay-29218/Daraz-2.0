@@ -23,8 +23,8 @@ import "react-toastify/dist/ReactToastify.css";
 import CheckOutWizard from "../components/CheckOutWizard";
 import { getError } from "../utils/error";
 import axios from "axios";
-import { useSession } from "next-auth/react";
-const placeorder = () => {
+import { getSession, useSession } from "next-auth/react";
+const Placeorder = () => {
   const router = useRouter();
   const {status,data:session} = useSession();
   const { state, dispatch } = useContext(Store);
@@ -142,8 +142,8 @@ const [loading, setLoading] = useState(false);
           <div className="  ">
             <div className="grid grid-cols-1   ">
               {selectedCartItems.length !== 0 ? (
-                stores.map((store) => (
-                  <div>
+                stores.map((store,i) => (
+                  <div key={i}>
                     <div className="flex gap-2 p-4">
                       <h3>{store}</h3>
                     </div>
@@ -199,8 +199,8 @@ const [loading, setLoading] = useState(false);
   );
 };
 
-export default dynamic(() => Promise.resolve(placeorder), { ssr: false });
-placeorder.auth = true;
+export default dynamic(() => Promise.resolve(Placeorder), { ssr: false });
+Placeorder.auth = true;
 export async function getServersideProps(context) {
   const session = await getSession(context);
   return { props: {} };

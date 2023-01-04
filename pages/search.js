@@ -8,7 +8,7 @@ import { getSession } from 'next-auth/react';
 import db from '../utils/db';
 import Product from '../models/Product';
 import Seller from '../models/Seller';
-const search = ({store,products}) => {
+const Search = ({store,products}) => {
     const router = useRouter()
     const { query } = router.query
     const { state, dispatch } = useContext(Store);
@@ -51,7 +51,7 @@ const search = ({store,products}) => {
   )
 }
 
-export default search;
+export default Search;
 export async function getServerSideProps(context) {
     const session = await getSession(context);
     const user = session?.user;

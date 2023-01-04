@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link'
 import React from 'react'
 
-const unauthorized = () => {
+const Unauthorized = () => {
     const {query} = useRouter();
 
   return (
@@ -14,4 +14,4 @@ const unauthorized = () => {
   )
 }
 
-export default unauthorized
+export default Unauthorized

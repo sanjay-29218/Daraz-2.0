@@ -8,7 +8,7 @@ import Product from "../../models/Product";
 import Seller from "../../models/Seller";
 import db from "../../utils/db";
 
-const addproduct = ({store,product}) => {
+const Addproduct = ({store,product}) => {
   const router = useRouter();
   // get id from url
   const { query } = useRouter();
@@ -248,8 +248,8 @@ const addproduct = ({store,product}) => {
   );
 };
 
-export default addproduct;
-addproduct.auth = true;
+export default Addproduct;
+Addproduct.auth = true;
 export async function getServerSideProps(context){
     const session = await getSession(context);
     const { params } = context;

@@ -12,7 +12,10 @@ import { data } from "autoprefixer";
 import Link from "next/link";
 import { Store } from "../../utils/store";
 import KhaltiCheckout from "khalti-checkout-web";
-import { mobileStepperClasses } from "@mui/material";
+import { Button, mobileStepperClasses } from "@mui/material";
+import {Alert} from "@mui/material";
+import { AlertTitle } from "@mui/material";
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -125,7 +128,10 @@ const OrderScreen = () => {
     if(!isPaid&&paymentMethod==='Khalti'){
       let checkout = new KhaltiCheckout(config);
       checkout.show({ amount: totalPrice*100 });
-      Router.push('/orderhistory');
+      if(checkout){
+        Router.push('/orderhistory');
+      }
+      
     }
     else if(!isPaid&&paymentMethod==='Cash on Delivery'){
       const orderId = query.id;
@@ -233,8 +239,8 @@ const OrderScreen = () => {
 
               <div className="grid grid-cols-1   ">
                 {stores.length !== 0 ? (
-                  stores.map((store) => (
-                    <div>
+                  stores.map((store,i) => (
+                    <div key={i}>
                       <div className="flex gap-2 p-4">
                         <h3>{store}</h3>
                       </div>
@@ -243,6 +249,7 @@ const OrderScreen = () => {
                           return (
                             <div key={storeitem.id}>
                               <hr />
+                              
                               <div className="grid grid-cols-[1fr_1fr] grid-rows-1   gap-2 p-4 ">
                                 <img
                                   src={storeitem.image}

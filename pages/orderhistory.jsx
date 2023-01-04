@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Navbardetail from "../components/Navbardetail";
 
-const orderhistory = () => {
+const Orderhistory = () => {
   const [stores, setStores] = useState([]);
   const [orders, setOrders] = useState([]);
 
@@ -79,4 +79,4 @@ const orderhistory = () => {
   );
 };
 
-export default orderhistory;
+export default Orderhistory;
