@@ -13,6 +13,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import Seller from "../models/Seller";
 import { getSession } from "next-auth/react";
+import User from "../models/User";
 
 
 const Homepage = ({ products ,store}) => {
@@ -67,12 +68,12 @@ export default Homepage;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const user = session?.user;
   await db.connect();
   const products = await Product.find().lean();
+  const user = await User.findOne({ email: session.user.email }).lean();
   let store;
   if(session){
-    const store = await Seller.findOne({ user: user._id }).lean();
+     store = await Seller.findOne({ user: user._id }).lean();
   }
   return {
     props: {

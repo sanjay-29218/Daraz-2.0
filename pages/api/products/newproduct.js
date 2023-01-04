@@ -12,8 +12,6 @@ const handler = async(req,res) =>{
     await db.connect();
     const product = new Product({
         ...req.body,
-        user:session.user._id,
-
     })
     const newproduct = await product.save();
     db.disconnect();

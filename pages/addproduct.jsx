@@ -5,9 +5,10 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Navbardetail from "../components/Navbardetail";
 import Seller from "../models/Seller";
+import User from "../models/User";
 import db from "../utils/db";
 
-const addproduct = ({store}) => {
+const addproduct = ({store,user}) => {
   const {
     handleSubmit,
     register,
@@ -32,6 +33,7 @@ const addproduct = ({store}) => {
     ).then((res) => res.json());
     const {res} = await axios.post("/api/products/newproduct",{
         name: data.productname,
+        user: user._id,
         slug: data.slug,
         store: store.store,
         category: data.category,
@@ -223,14 +225,14 @@ export default addproduct;
 addproduct.auth = true;
 export async function getServerSideProps(context){
     const session = await getSession(context);
-    const user = session?.user;
+    const user = await User.findOne({ email: session.user.email }).lean();  
     await db.connect();
-    const store = await Seller.findOne({user:user._id }).lean();
+    const store = await Seller.findOne({ user: user._id }).lean();
     await db.disconnect();
     console.log(store)
-    return {
+    return {  
         props:{
- 
+            user: user?db.convertDocToObj(user):null,
             store:store?db.convertDocToObj(store):null,
         }
     

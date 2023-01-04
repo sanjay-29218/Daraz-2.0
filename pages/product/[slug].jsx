@@ -18,13 +18,19 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import User from "../../models/User";
 import { getSession } from "next-auth/react";
-import RatingM from '../../models/Rating'
+import RatingModel from '../../models/Rating'
+import Comment from '../../models/Comment'
 import { Rating } from "@mui/material";
-import { useEffect } from "react";
-const ProductDetails = ({ product,rating,user}) => {
+import { useEffect,useRef } from "react";
+const ProductDetails = ({ product,rating,user,comments}) => {
   const { state, dispatch } = useContext(Store);
-  const [productRating,setProductRating] = useState(rating.rating);
-
+  const com = useRef();
+  const [productRating,setProductRating] = useState(rating?.rating||0);
+  const [productNumReviews,setProductNumReviews] = useState(product?.numReviews||0);
+  const [allProductRating,setAllProductRating] = useState(product?.rating||0);
+  const [comment,setComment] = useState("");
+  const [allcomment,setAllComment] = useState(comments);
+  console.log(allcomment);
 
 
   // Handling the add to cart functionality
@@ -46,43 +52,61 @@ const ProductDetails = ({ product,rating,user}) => {
   useEffect(() => {
     if (productRating) {
       setProductRating(rating.rating);
+      setProductNumReviews(product.numReviews);
+      setAllProductRating(product.rating);
       }
-      }, [rating]);
+      }, [rating,product,comments]);
 
   async function handleRating(newValue){
     if(rating){
-      const {data} = await axios.put(`/api/rating/rating`,{
+      const {data} = await axios.put(`/api/rating/updaterating`,{
         ratingid:rating._id,
         rating:newValue
       })
-      const {productres} = await axios.put(`/api/products/updaterating/updaterating`,{
+      const {productres} = await axios.put(`/api/rating/updateallrating`,{
         ratingid:rating._id,
         productid:product._id,
         rating:newValue
       })
-      console.log(productres)
-      setProductRating(data.rating)
+      console.log(productres,data)
+      setProductRating(newValue)
     }
     else{
-      const {data} = await axios.post(`/api/rating/rating`,{
+      console.log(product._id,user._id)
+      const {data} = await axios.post(`/api/rating/newrating`,{
         rating:newValue,
         productid:product._id,
         userid:user._id
       })
-      const {productres} = await axios.put(`/api/products/updaterating`,{
+      const {productres} = await axios.put(`/api/rating/updateallrating`,{
         productid:product._id,
         rating:newValue
       })
     setProductRating(newValue)
-    
   }
 
+  
 
-
-  if (!product) {
+  if (product===null) {
     return <div>Product not found</div>;
   }
 }
+
+async function handleComment(e){
+  // e.preventDefault();
+  const comment = com.current.value;
+  console.log(comment)
+  const {commentdata} = await axios.post(`/api/comment/newcomment`,{
+    comment:comment,
+    productid:product._id,
+    userid:user._id
+  })
+  setAllComment([...allcomment,{comment:comment}])
+  setComment("")
+}
+
+
+
   const discountPercentage = (price, discountedPrice) => {
     return ((price - discountedPrice) / price) * 100;
   };
@@ -126,7 +150,7 @@ const ProductDetails = ({ product,rating,user}) => {
 
           </span>
           {/* detail description */}
-          <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[4rem] border rounded-lg  flex flex-col  py-[2rem]">
+          <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[2rem] border rounded-lg  flex flex-col  py-[2rem]">
             <hr className="h-10px text-red-50" />
             <Link href={"/store"}>
            <div className="flex items-center">
@@ -141,11 +165,11 @@ const ProductDetails = ({ product,rating,user}) => {
               <div className="md:flex hidden   ">
                 <Rating
                   name="half-rating-read"
-                  defaultValue={product.rating}
+                  defaultValue={allProductRating}
                   precision={0.5}
                   readOnly
                 />
-                <span>({product.numReviews})</span>
+                <span>({productNumReviews})</span>
               </div>
               {/* product price */}
               <p className="font-bold text-[#f57224] text-[1.5rem] md:text-[1.5rem] py-2 ">
@@ -187,9 +211,9 @@ const ProductDetails = ({ product,rating,user}) => {
           </div>
         </div>
 
-        <div className=" bg-white ml-5 p-4 ">
+        <div className=" bg-white md:ml-5 p-4 ">
           {rating?(
-            <p className="flex items-center text-[2rem]">Rating: <Rating
+            <p className="flex items-center text-[2rem]"><p>Rating:</p> <Rating
             name="half-rating-read"
             defaultValue={0}
             precision={1}
@@ -199,7 +223,8 @@ const ProductDetails = ({ product,rating,user}) => {
             }}
           /></p>
           ):(
-            <p className="flex items-center text-[2rem]">Rating: <Rating
+            <p className="flex flex-col gap-5 text-[2rem]">Leave your Review 
+             <Rating
             name="half-rating-read"
             defaultValue={0}
             precision={0.5}
@@ -210,7 +235,26 @@ const ProductDetails = ({ product,rating,user}) => {
           /></p>
 
           )}
-          <p>Comments</p>
+          <div className="flex flex-col mt-4 text-[1.5rem] gap-5">
+            <p>Comments:</p>
+           <div className=" h-[10rem] overflow-scroll  bg-slate-100 p-4 flex flex-col gap-5">
+           {allcomment?(
+            allcomment.map((comment)=>(
+              <div >
+                
+                <p>{comment.comment}</p>
+                <hr className=" border-1 border-gray-500" />
+              </div>
+            ))
+           ):(
+            <div>Be the first one to comment</div>
+           )}
+           </div>
+            
+            <input type="text" placeholder="Leave your commment"value={comment} ref={com} onChange={(e)=>{setComment(e.target.value)}} name="" id="comment" className="border-2 p-3 py-9" />
+            <button className="bg-[#f57224] text-white p-2 mb-[3rem] rounded-md" onClick={handleComment}>Submit</button>
+
+          </div>
         </div>
       </div>
       <section className="md:hidden">
@@ -227,15 +271,24 @@ export const getServerSideProps = async (context) => {
   const { slug } = params;
   const session = await getSession(context);
   await db.connect();
-  const product = await Product.findOne({ slug: slug }).lean();
-  const user = await User.findOne({ email: session.user.email }).lean();
-  const rating= await RatingM.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
+  let product,user,rating,comments;
+  if(session){
+     product = await Product.findOne({ slug: slug }).lean();
+
+     user = await User.findOne({ email: session.user.email }).lean();
+     if(product){
+      rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
+      comments = await Comment.find({product:product._id}).lean();
+     }
+    }
+    // rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
   await db.disconnect();
   return {
     props: {
       user: user ? db.convertDocToObj(user) : null,
       product: product ? db.convertDocToObj(product) : null,
-      rating:rating?db.convertDocToObj(rating):null
+      rating:rating?db.convertDocToObj(rating):null,
+      comments:comments?comments.map(db.convertDocToObj):null
       
     },
   };
