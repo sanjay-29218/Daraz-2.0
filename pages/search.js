@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
-import { Store } from "../utils/storea";
+import { Store } from "../utils/store";
 import { toast, ToastContainer } from "react-toastify";
 import Navbardetail from "../components/Navbardetail";
 import ProductBox from "../components/ProductBox";

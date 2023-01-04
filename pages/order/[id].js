@@ -10,7 +10,7 @@ import Navbardetail from "../../components/Navbardetail";
 import axios from "axios";
 import { data } from "autoprefixer";
 import Link from "next/link";
-import { Store } from "../../utils/storea";
+import { Store } from "../../utils/store";
 import KhaltiCheckout from "khalti-checkout-web";
 import { Button, mobileStepperClasses } from "@mui/material";
 import { Alert } from "@mui/material";

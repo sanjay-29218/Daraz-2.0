@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiCart } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import Link from "next/link";
-import { Store } from "../utils/storea";
+import { Store } from "../utils/store";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { IoIosArrowBack } from "react-icons/io";

@@ -3,7 +3,7 @@ import CheckOutWizard from "../components/CheckOutWizard";
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Store } from "../utils/storea";
+import { Store } from "../utils/store";
 import Cookies from "js-cookie";
 import Navbardetail from "../components/Navbardetail";
 import { useRouter } from "next/router";

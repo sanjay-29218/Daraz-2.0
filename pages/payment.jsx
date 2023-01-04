@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import CheckoutWizard from "../components/CheckoutWizard";
-import { Store } from "../utils/storea";
+import { Store } from "../utils/store";
 
 // import toastcontainer
 import { ToastContainer } from "react-toastify";

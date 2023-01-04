@@ -11,7 +11,7 @@ import { FiArrowRight } from "react-icons/fi";
 import db from "../../utils/db";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Store } from "../../utils/storea";
+import { Store } from "../../utils/store";
 import axios from "axios";
 import { useContext } from "react";
 import Link from "next/link";

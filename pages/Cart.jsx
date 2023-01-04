@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import Navbardetail from "../components/Navbardetail";
-import { Store } from "../utils/storea";
+import { Store } from "../utils/store";
 import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/router";
 import { AiFillDelete, AiOutlineDelete } from "react-icons/ai";

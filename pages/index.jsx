@@ -8,7 +8,7 @@ import Navbardetail from "../components/Navbardetail";
 import "react-toastify/dist/ReactToastify.css";
 import Product from "../models/Product";
 import db from "../utils/db";
-import { Store } from "../utils/storea";
+import { Store } from "../utils/store";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import Seller from "../models/Seller";
