@@ -187,7 +187,7 @@ const Cart = (props) => {
     dispatch({ type: "CART_ADD_ITEM", payload: { ...item, qty } });
   };
 
-  // Update to Cart handler
+  // Update to Cart 
 
   const updateCartHandler = (item, value) => {
     const existItem = cart.cartItems.find((x) => x.slug === item.slug);
