@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
-import CheckoutWizard from "../components/CheckoutWizard";
+import CheckOutWizard from "../components/CheckOutWizard";
+
+
 import { Store } from "../utils/store";
 
 // import toastcontainer
@@ -46,7 +48,7 @@ export default function PaymentScreen() {
     <div>
       <ToastContainer />
       <Navbardetail isHome />
-      <CheckoutWizard activeStep={2} />
+      <CheckOutWizard activeStep={2} />
       <form className="mx-auto p-3 max-w-screen-md" onSubmit={submitHandler}>
         <h1 className="mb-4 text-xl">Payment Method</h1>
         {["Khalti", "CashOnDelivery"].map((payment) => (
