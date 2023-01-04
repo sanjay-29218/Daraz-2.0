@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { BiCart } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import Link from "next/link";
-import { Store } from "../utils/store";
+import { Store } from "../utils/storea";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { IoIosArrowBack } from "react-icons/io";
 import { signOut, useSession } from "next-auth/react";
 import Dropdown from "./Dropdown";
-
 
 const Navbardetail = (props) => {
   const { status, data: session } = useSession();
@@ -26,14 +25,11 @@ const Navbardetail = (props) => {
     dispatch({ type: "CART_RESET" });
     signOut({ callbackUrl: "/Login" });
   };
-  const handleSearch = ()=>{
+  const handleSearch = () => {
     router.push(`/Search?search=${search}`);
-  }
+  };
   const onChangeHandler = (e) => {
     setSearch(e.target.value);
-    
-
-
   };
 
   return (
@@ -98,7 +94,10 @@ const Navbardetail = (props) => {
             }}
             className="w-[80vw] h-[45px] bg-[#F5F5F5]   md:w-[600px]  md:h-[45px] "
           />
-          <AiOutlineSearch onClick={handleSearch} className="bg-[#F57224] w-[45px] h-[45px] text-white p-[5px]" />
+          <AiOutlineSearch
+            onClick={handleSearch}
+            className="bg-[#F57224] w-[45px] h-[45px] text-white p-[5px]"
+          />
         </div>
         <Link href="/Cart">
           <div className="relative hidden md:block">

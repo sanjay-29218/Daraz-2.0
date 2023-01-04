@@ -8,10 +8,10 @@ import React, {
 } from "react";
 
 import Navbardetail from "../components/Navbardetail";
-import { Store } from "../utils/store";
+import { Store } from "../utils/storea";
 import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/router";
-import {  AiFillEdit,  } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Button from "@mui/material/Button";
@@ -26,13 +26,13 @@ import axios from "axios";
 import { getSession, useSession } from "next-auth/react";
 const Placeorder = () => {
   const router = useRouter();
-  const {status,data:session} = useSession();
+  const { status, data: session } = useSession();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { shippingAddress, paymentMethod, selectedCartItems },
   } = state;
-  console.log(state)
-  console.log(session)
+  console.log(state);
+  console.log(session);
 
   // for handling store
 
@@ -59,24 +59,22 @@ const Placeorder = () => {
 
   // for rounding number upto 2 decimal places
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-  
+
   const handleSummary = () => {
-    
-    let summary = {total:0, deliveryFee:0,totalqty:0,itemsTotal:0};
+    let summary = { total: 0, deliveryFee: 0, totalqty: 0, itemsTotal: 0 };
     selectedCartItems.forEach((item) => {
       summary.itemsTotal += item.price * item.qty;
-      summary.totalqty +=  item.qty;
+      summary.totalqty += item.qty;
       summary.deliveryFee += item.price > 200 ? 0 : 15;
-    }
-    );
-     summary.total = round2(summary.itemsTotal + summary.deliveryFee );
+    });
+    summary.total = round2(summary.itemsTotal + summary.deliveryFee);
     return summary;
   };
   const summary = useMemo(() => {
     return handleSummary();
   }, []);
-  
-const [loading, setLoading] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const handlePlaceOrder = async () => {
     setLoading(true);
@@ -99,12 +97,12 @@ const [loading, setLoading] = useState(false);
       setLoading(false);
       toast.error(getError(err));
     }
-  }
+  };
   return (
     <div className="bg-gray-200 h-fit">
       <Navbardetail isHome />
       <CheckOutWizard activeStep={3} />
-      <ToastContainer/>
+      <ToastContainer />
       <div className="flex flex-col md:grid-p ">
         <div className="grid-item p-4 shadow-md md:w-[60vw]  bg-white border rounded-md ">
           <p>Deliver to : {shippingAddress.fullname} </p>
@@ -117,8 +115,9 @@ const [loading, setLoading] = useState(false);
               </span>
             </Link>
           </p>
-          <p className="flex gap-2 items-center">Payment Method : {paymentMethod}
-          <Link href={"/payment"}>
+          <p className="flex gap-2 items-center">
+            Payment Method : {paymentMethod}
+            <Link href={"/payment"}>
               <span>
                 <AiFillEdit />
               </span>
@@ -130,19 +129,39 @@ const [loading, setLoading] = useState(false);
           {/* <hr /> */}
           <div className="hidden font-bold mb-2">Order Summary </div>
           <hr />
-          <div className="hidden md:block font-bold">Items Total :{summary.itemsTotal}</div>
-          <div className="hidden md:block font-bold">Total Qty :{summary.totalqty}</div>
-          <div className="hidden md:block font-bold">Delivery Fee :{summary.deliveryFee}</div>
-          <div className="hidden md:block font-bold">Total Payment :{summary.total}</div>
-          <div className="font-bold text-[#f85300]">Total : {summary.total} </div>
-          <button className="p-2 md:block w-full hidden    bg-[#f85300]" onClick={handlePlaceOrder}>Place Order</button>
-          <button className="  md:hidden p-2  w-[20%]   bg-[#f85300]" onClick={handlePlaceOrder}>Order</button>
+          <div className="hidden md:block font-bold">
+            Items Total :{summary.itemsTotal}
+          </div>
+          <div className="hidden md:block font-bold">
+            Total Qty :{summary.totalqty}
+          </div>
+          <div className="hidden md:block font-bold">
+            Delivery Fee :{summary.deliveryFee}
+          </div>
+          <div className="hidden md:block font-bold">
+            Total Payment :{summary.total}
+          </div>
+          <div className="font-bold text-[#f85300]">
+            Total : {summary.total}{" "}
+          </div>
+          <button
+            className="p-2 md:block w-full hidden    bg-[#f85300]"
+            onClick={handlePlaceOrder}
+          >
+            Place Order
+          </button>
+          <button
+            className="  md:hidden p-2  w-[20%]   bg-[#f85300]"
+            onClick={handlePlaceOrder}
+          >
+            Order
+          </button>
         </div>
         <div className="md:grid-item shadow-md md:w-[60vw] bg-white border rounded-md">
           <div className="  ">
             <div className="grid grid-cols-1   ">
               {selectedCartItems.length !== 0 ? (
-                stores.map((store,i) => (
+                stores.map((store, i) => (
                   <div key={i}>
                     <div className="flex gap-2 p-4">
                       <h3>{store}</h3>

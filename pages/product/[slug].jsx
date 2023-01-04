@@ -1,41 +1,43 @@
 import ReactImageMagnify from "react-image-magnify";
 import { useRouter } from "next/router";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Cartsection from "../../components/Cartsection";
 import { FcRating } from "react-icons/fc";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Navbardetail from "../../components/Navbardetail";
 import Product from "../../models/Product";
-import {FiArrowRight} from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 import db from "../../utils/db";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Store } from "../../utils/store";
+import { Store } from "../../utils/storea";
 import axios from "axios";
 import { useContext } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import User from "../../models/User";
 import { getSession } from "next-auth/react";
-import RatingModel from '../../models/Rating'
-import Comment from '../../models/Comment'
+import RatingModel from "../../models/Rating";
+import Comment from "../../models/Comment";
 import { Rating } from "@mui/material";
-import { useEffect,useRef } from "react";
-const ProductDetails = ({ product,rating,user,comments}) => {
+import { useEffect, useRef } from "react";
+const ProductDetails = ({ product, rating, user, comments }) => {
   const { state, dispatch } = useContext(Store);
   const com = useRef();
-  const [productRating,setProductRating] = useState(rating?.rating||0);
-  const [productNumReviews,setProductNumReviews] = useState(product?.numReviews||0);
-  const [allProductRating,setAllProductRating] = useState(product?.rating||0);
-  const [comment,setComment] = useState("");
-  const [allcomment,setAllComment] = useState(comments);
+  const [productRating, setProductRating] = useState(rating?.rating || 0);
+  const [productNumReviews, setProductNumReviews] = useState(
+    product?.numReviews || 0
+  );
+  const [allProductRating, setAllProductRating] = useState(
+    product?.rating || 0
+  );
+  const [comment, setComment] = useState("");
+  const [allcomment, setAllComment] = useState(comments);
   console.log(allcomment);
-
 
   // Handling the add to cart functionality
   const addToCartHandler = async (product) => {
-    
     const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
     const data = await axios.get(`/api/products/${product._id}`);
 
@@ -54,69 +56,64 @@ const ProductDetails = ({ product,rating,user,comments}) => {
       setProductRating(rating.rating);
       setProductNumReviews(product.numReviews);
       setAllProductRating(product.rating);
-      }
-      }, [rating,product,comments]);
-
-  async function handleRating(newValue){
-    if(!session){
-      return toast.error("Please login to give rating")
-
-    }else{
-      if(rating){
-        const {data} = await axios.put(`/api/rating/updaterating`,{
-          ratingid:rating._id,
-          rating:newValue
-        })
-        const {productres} = await axios.put(`/api/rating/updateallrating`,{
-          ratingid:rating._id,
-          productid:product._id,
-          rating:newValue
-        })
-        console.log(productres,data)
-        setProductRating(newValue)
-        toast.success("Rating updated successfully")
-      }
-      else{
-        console.log(product._id,user._id)
-        const {data} = await axios.post(`/api/rating/newrating`,{
-          rating:newValue,
-          productid:product._id,
-          userid:user._id
-        })
-        const {productres} = await axios.put(`/api/rating/updateallrating`,{
-          productid:product._id,
-          rating:newValue
-        })
-      setProductRating(newValue)
-      toast.success("Rating added successfully")
     }
+  }, [rating, product, comments]);
+
+  async function handleRating(newValue) {
+    if (!session) {
+      return toast.error("Please login to give rating");
+    } else {
+      if (rating) {
+        const { data } = await axios.put(`/api/rating/updaterating`, {
+          ratingid: rating._id,
+          rating: newValue,
+        });
+        const { productres } = await axios.put(`/api/rating/updateallrating`, {
+          ratingid: rating._id,
+          productid: product._id,
+          rating: newValue,
+        });
+        console.log(productres, data);
+        setProductRating(newValue);
+        toast.success("Rating updated successfully");
+      } else {
+        console.log(product._id, user._id);
+        const { data } = await axios.post(`/api/rating/newrating`, {
+          rating: newValue,
+          productid: product._id,
+          userid: user._id,
+        });
+        const { productres } = await axios.put(`/api/rating/updateallrating`, {
+          productid: product._id,
+          rating: newValue,
+        });
+        setProductRating(newValue);
+        toast.success("Rating added successfully");
+      }
     }
 
-  if (product===null) {
-    return <div>Product not found</div>;
+    if (product === null) {
+      return <div>Product not found</div>;
+    }
   }
-}
 
-async function handleComment(e){
-  // e.preventDefault();
- if(!session){
-    return toast.error("Please login to give comment")
- }
-  else{
-    const comment = com.current.value;
-    console.log(comment)
-    const {commentdata} = await axios.post(`/api/comment/newcomment`,{
-      comment:comment,
-      productid:product._id,
-      userid:user._id
-    })
-    setAllComment([...allcomment,{comment:comment}])
-    setComment("")
-    toast.success("Comment added successfully")
+  async function handleComment(e) {
+    // e.preventDefault();
+    if (!session) {
+      return toast.error("Please login to give comment");
+    } else {
+      const comment = com.current.value;
+      console.log(comment);
+      const { commentdata } = await axios.post(`/api/comment/newcomment`, {
+        comment: comment,
+        productid: product._id,
+        userid: user._id,
+      });
+      setAllComment([...allcomment, { comment: comment }]);
+      setComment("");
+      toast.success("Comment added successfully");
+    }
   }
-}
-
-
 
   const discountPercentage = (price, discountedPrice) => {
     return ((price - discountedPrice) / price) * 100;
@@ -158,19 +155,17 @@ async function handleComment(e){
           <span className="flex  justify-center gap-1 py-2 md:hidden   ">
             <FcRating className="text-[2rem]" />
             {product.rating}/5
-
           </span>
           {/* detail description */}
           <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[2rem] border rounded-lg  flex flex-col  py-[2rem]">
             <hr className="h-10px text-red-50" />
             <Link href={"/store"}>
-           <div className="flex items-center">
-           
-           <div className="">{product.store}</div>
-           <FiArrowRight/>
-           </div>
+              <div className="flex items-center">
+                <div className="">{product.store}</div>
+                <FiArrowRight />
+              </div>
             </Link>
-            
+
             <div className="flex flex-col ">
               {/* product raing for medium */}
               <div className="md:flex hidden   ">
@@ -223,48 +218,66 @@ async function handleComment(e){
         </div>
 
         <div className=" bg-white md:ml-5 p-4 ">
-          {rating?(
-            <p className="flex items-center text-[2rem]"><p>Rating:</p> <Rating
-            name="half-rating-read"
-            defaultValue={0}
-            precision={1}
-            value={productRating}
-            onChange={(event, newValue) => {
-              handleRating(newValue);
-            }}
-          /></p>
-          ):(
-            <p className="flex flex-col gap-5 text-[2rem]">Leave your Review 
-             <Rating
-            name="half-rating-read"
-            defaultValue={0}
-            precision={0.5}
-            value={0}
-            onChange={(event, newValue) => {
-              handleRating(newValue);
-            }}
-          /></p>
-
+          {rating ? (
+            <p className="flex items-center text-[2rem]">
+              <p>Rating:</p>{" "}
+              <Rating
+                name="half-rating-read"
+                defaultValue={0}
+                precision={1}
+                value={productRating}
+                onChange={(event, newValue) => {
+                  handleRating(newValue);
+                }}
+              />
+            </p>
+          ) : (
+            <p className="flex flex-col gap-5 text-[2rem]">
+              Leave your Review
+              <Rating
+                name="half-rating-read"
+                defaultValue={0}
+                precision={0.5}
+                value={0}
+                onChange={(event, newValue) => {
+                  handleRating(newValue);
+                }}
+              />
+            </p>
           )}
           <div className="flex flex-col mt-4 text-[1.5rem] gap-5">
             <p>Comments:</p>
-           <div className=" h-[10rem] overflow-scroll  bg-slate-100 p-4 flex flex-col gap-5">
-           {allcomment?(
-            allcomment.map((comment)=>(
-              <div key={comment._id}>
-                
-                <p>{comment.comment}</p>
-                <hr className=" border-1 border-gray-500" />
-              </div>
-            ))
-           ):(
-            <div>Be the first one to comment</div>
-           )}
-           </div>
-            
-            <input type="text" placeholder="Leave your commment"value={comment} ref={com} onChange={(e)=>{setComment(e.target.value)}} name="" id="comment" className="border-2 p-3 py-9" />
-            <button className="bg-[#f57224] text-white p-2 mb-[3rem] rounded-md" onClick={handleComment}>Submit</button>
+            <div className=" h-[10rem] overflow-scroll  bg-slate-100 p-4 flex flex-col gap-5">
+              {allcomment ? (
+                allcomment.map((comment) => (
+                  <div key={comment._id}>
+                    <p>{comment.comment}</p>
+                    <hr className=" border-1 border-gray-500" />
+                  </div>
+                ))
+              ) : (
+                <div>Be the first one to comment</div>
+              )}
+            </div>
 
+            <input
+              type="text"
+              placeholder="Leave your commment"
+              value={comment}
+              ref={com}
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+              name=""
+              id="comment"
+              className="border-2 p-3 py-9"
+            />
+            <button
+              className="bg-[#f57224] text-white p-2 mb-[3rem] rounded-md"
+              onClick={handleComment}
+            >
+              Submit
+            </button>
           </div>
         </div>
       </div>
@@ -282,25 +295,26 @@ export const getServerSideProps = async (context) => {
   const { slug } = params;
   const session = await getSession(context);
   await db.connect();
-  let product,user,rating,comments;
-  if(session){
-     product = await Product.findOne({ slug: slug }).lean();
+  let product, user, rating, comments;
+  if (session) {
+    product = await Product.findOne({ slug: slug }).lean();
 
-     user = await User.findOne({ email: session.user.email }).lean();
-     if(product){
-      rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
-      comments = await Comment.find({product:product._id}).lean();
-     }
+    user = await User.findOne({ email: session.user.email }).lean();
+    if (product) {
+      rating = await RatingModel.findOne({
+        $and: [{ product: product._id }, { user: user._id }],
+      }).lean();
+      comments = await Comment.find({ product: product._id }).lean();
     }
-    // rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
+  }
+  // rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
   await db.disconnect();
   return {
     props: {
       user: user ? db.convertDocToObj(user) : null,
       product: product ? db.convertDocToObj(product) : null,
-      rating:rating?db.convertDocToObj(rating):null,
-      comments:comments?comments.map(db.convertDocToObj):null
-      
+      rating: rating ? db.convertDocToObj(rating) : null,
+      comments: comments ? comments.map(db.convertDocToObj) : null,
     },
   };
 };

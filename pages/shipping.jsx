@@ -3,7 +3,7 @@ import CheckOutWizard from "../components/CheckOutWizard";
 import Select from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Store } from "../utils/store";
+import { Store } from "../utils/storea";
 import Cookies from "js-cookie";
 import Navbardetail from "../components/Navbardetail";
 import { useRouter } from "next/router";
@@ -20,18 +20,17 @@ let country = [
 
 const ProductScreen = (props) => {
   const router = useRouter();
-  const {state,dispatch} = useContext(Store); 
-  const {cart} = state;
-  const {shippingAddress} = cart;
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const { shippingAddress } = cart;
 
   const {
     handleSubmit,
     register,
     formState: { errors },
     setValue,
-
   } = useForm();
-  function submitHandler(data){
+  function submitHandler(data) {
     dispatch({
       type: "CART_SAVE_SHIPPING_ADDRESS",
       payload: {
@@ -42,36 +41,36 @@ const ProductScreen = (props) => {
         street: data.street,
       },
     });
-    Cookies.set('cart',JSON.stringify({
-      ...cart,
-      shippingAddress: {
-        fullname: data.fullname,
-        mobile: data.mobile,
-        postal: data.postal,
-        city: data.city,
-        street: data.street,
-        // country: countryValue,
-      }
-    }));
-    router.push('/payment')
+    Cookies.set(
+      "cart",
+      JSON.stringify({
+        ...cart,
+        shippingAddress: {
+          fullname: data.fullname,
+          mobile: data.mobile,
+          postal: data.postal,
+          city: data.city,
+          street: data.street,
+          // country: countryValue,
+        },
+      })
+    );
+    router.push("/payment");
     console.log("shippingAddress", shippingAddress);
-  };
-    
-   
+  }
 
-    useEffect(()=>{
-      setValue("fullname",shippingAddress?.fullname);
-      setValue("mobile",shippingAddress?.mobile);
-      setValue("postal",shippingAddress?.postal);
-      setValue("city",shippingAddress?.city);
-      setValue("street",shippingAddress?.street);
-      // setValue("country",countryValue);
-
-    },[])
-    // router.push("/payment");
+  useEffect(() => {
+    setValue("fullname", shippingAddress?.fullname);
+    setValue("mobile", shippingAddress?.mobile);
+    setValue("postal", shippingAddress?.postal);
+    setValue("city", shippingAddress?.city);
+    setValue("street", shippingAddress?.street);
+    // setValue("country",countryValue);
+  }, []);
+  // router.push("/payment");
   return (
     <div>
-      <Navbardetail isHome/>
+      <Navbardetail isHome />
       <CheckOutWizard activeStep={1}></CheckOutWizard>
       <form
         action=""
@@ -146,7 +145,7 @@ const ProductScreen = (props) => {
             rules={{ required: true }}
           />
         )} */}
-        {/* {countryValue && (
+            {/* {countryValue && (
           <Controller
             name="country"
 
@@ -167,7 +166,6 @@ const ProductScreen = (props) => {
           />
         )}
         {errors.country && <div>Field is rquired</div>} */}
-
           </div>
           <div className="mb-4 flex flex-col gap-2">
             <label htmlFor="postal">Street address</label>
@@ -202,13 +200,14 @@ const ProductScreen = (props) => {
             )}
           </div>
           <div className="mb-4 flex justify-between">
-            <button className="btn" type="submit" >Next</button>
-            
+            <button className="btn" type="submit">
+              Next
+            </button>
           </div>
         </div>
       </form>
     </div>
   );
 };
-ProductScreen.auth=true;
+ProductScreen.auth = true;
 export default ProductScreen;

@@ -10,7 +10,7 @@ import Navbardetail from "../../components/Navbardetail";
 import axios from "axios";
 import { data } from "autoprefixer";
 import Link from "next/link";
-import { Store } from "../../utils/store";
+import { Store } from "../../utils/storea";
 import KhaltiCheckout from "khalti-checkout-web";
 import { Alert, AlertTitle, Button, mobileStepperClasses } from "@mui/material";
 const reducer = (state, action) => {
@@ -204,7 +204,7 @@ const OrderScreen = () => {
 
               <div className="grid grid-cols-1   ">
                 {stores.length !== 0 ? (
-                  stores.map((store,i) => (
+                  stores.map((store, i) => (
                     <div key={i}>
                       <div className="flex gap-2 p-4">
                         <h3>{store}</h3>
