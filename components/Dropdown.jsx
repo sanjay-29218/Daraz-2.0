@@ -35,7 +35,7 @@ export default function Example({session,href,logoutCLickHandler}) {
             <div className="px-1 py-1 ">
               <Menu.Item>
                 {({ active }) => (
-                  <Link href={href}>
+                  <Link href={'/me'}>
                   <button
                     className={`${
                       active ? 'bg-violet-500 text-white' : 'text-gray-900'
