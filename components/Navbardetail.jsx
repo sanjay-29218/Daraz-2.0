@@ -26,16 +26,16 @@ const Navbardetail = (props) => {
     signOut({ callbackUrl: "/Login" });
   };
   const handleSearch = () => {
-    router.push(`/Search?search=${search}`);
+    router.push(`/search?search=${search}`);
   };
   const onChangeHandler = (e) => {
     setSearch(e.target.value);
   };
 
   return (
-    <div className="flex flex-col gap-5 left-0 sticky top-0 md:sticky z-[999] bg-white  items-center pt-[10px]   shadow-md  ">
+    <div className="flex flex-col gap-5 left-0 sticky top-0 md:sticky z-[999] bg-white  items-center pt-[10px] p-2  shadow-md  ">
       {/* upper part of navbar */}
-      <div className="flex  lg:hidden gap-[1rem] pt-5">
+      <div className="flex  lg:hidden justify-between gap-[3rem] pt-5">
         {props.isHome && <IoIosArrowBack onClick={() => router.back()} />}
         <Link href={"/"}>
           <img
@@ -74,7 +74,7 @@ const Navbardetail = (props) => {
           <BiCart className="   w-[30px] h-[30px] ml-[20px] " />
         </Link>
         {cartcount > 0 && (
-          <span className="ml-1 rounded-full w-5 h-5 bg-[#F57224] text-white text-sm text-center font-semibold absolute right-[10px] top-[20px]">
+          <span className="ml-1 rounded-full w-5 h-5 bg-[#F57224] text-white text-sm text-center font-semibold absolute right-[30px] top-[20px]">
             {cartcount}
           </span>
         )}
@@ -89,12 +89,19 @@ const Navbardetail = (props) => {
             type="text"
             placeholder="Search for products, brands and more"
             value={search}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
             onChange={(e) => {
+              
               onChangeHandler(e);
             }}
-            className="w-[80vw] h-[45px] bg-[#F5F5F5]   md:w-[600px]  md:h-[45px] "
+            className="w-[80vw] h-[45px] bg-[#F5F5F5]   md:w-[600px]  md:h-[45px] p-3 focus:outline-none"
           />
           <AiOutlineSearch
+            
             onClick={handleSearch}
             className="bg-[#F57224] w-[45px] h-[45px] text-white p-[5px]"
           />
@@ -140,20 +147,7 @@ const Navbardetail = (props) => {
           )}
         </div>
       </div>
-      {/* Categories part */}
-      <div className="flex justufy-start w-screen">
-        <select name="" id="">
-          <option
-            value="none"
-            defaultValue={"All Categories"}
-            className="clear"
-          >
-            All Categories
-          </option>
-          <option value="">Women&aposs; Fashion</option>
-          <option value="">Men&apos;s Fashion</option>
-        </select>
-      </div>
+      
     </div>
   );
 };

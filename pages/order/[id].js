@@ -276,14 +276,7 @@ const OrderScreen = () => {
                   ))
                 ) : (
                   <div className="h-screen  pt-5 px-2">
-                    <Alert severity="info">
-                      <AlertTitle className="">
-                        There is no item in your cart
-                      </AlertTitle>
-                      <Button variant="outlined" href="/">
-                        Continue Shopping
-                      </Button>
-                    </Alert>
+                   
                   </div>
                 )}
               </div>

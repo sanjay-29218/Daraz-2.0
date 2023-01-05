@@ -22,6 +22,7 @@ import RatingModel from "../../models/Rating";
 import Comment from "../../models/Comment";
 import { Rating } from "@mui/material";
 import { useEffect, useRef } from "react";
+import { BsPersonCircle } from "react-icons/bs";
 const ProductDetails = ({ product, rating, user, comments }) => {
   const { state, dispatch } = useContext(Store);
   const com = useRef();
@@ -29,6 +30,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   const [productNumReviews, setProductNumReviews] = useState(
     product?.numReviews || 0
   );
+  const session = getSession();
   const [allProductRating, setAllProductRating] = useState(
     product?.rating || 0
   );
@@ -74,8 +76,8 @@ const ProductDetails = ({ product, rating, user, comments }) => {
           rating: newValue,
         });
         console.log(productres, data);
-        setProductRating(newValue);
         toast.success("Rating updated successfully");
+        setProductRating(newValue);
       } else {
         console.log(product._id, user._id);
         const { data } = await axios.post(`/api/rating/newrating`, {
@@ -87,8 +89,8 @@ const ProductDetails = ({ product, rating, user, comments }) => {
           productid: product._id,
           rating: newValue,
         });
-        setProductRating(newValue);
         toast.success("Rating added successfully");
+        setProductRating(newValue);
       }
     }
 
@@ -149,7 +151,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
         </div>
         <div className="flex-col h-full  gap-5 justify-center bg-white items-center pt-2 md:p-4 ">
           <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
-            {product.description}
+            {product.name}
           </p>
           {/* product raing */}
           <span className="flex  justify-center gap-1 py-2 md:hidden   ">
@@ -168,6 +170,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
 
             <div className="flex flex-col ">
               {/* product raing for medium */}
+              <p className=" text-[1rem] py-2 ">Brand: {product.brand}</p>
               <div className="md:flex hidden   ">
                 <Rating
                   name="half-rating-read"
@@ -181,6 +184,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
               <p className="font-bold text-[#f57224] text-[1.5rem] md:text-[1.5rem] py-2 ">
                 Rs {product.discountedPrice}
               </p>
+
               <div className="text-[#f57224] flex py-2 ">
                 <s className="text-gray-500">Rs {product.price}</s>
                 <p>
@@ -216,68 +220,94 @@ const ProductDetails = ({ product, rating, user, comments }) => {
             </div>
           </div>
         </div>
+        <div className="flex-col h-full  gap-5 justify-center bg-white items-center pt-2 md:p-4 ">
+        <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
+            Product Details
+          </p>
+          {/* detail description */}
+          <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[2rem] border rounded-lg  flex flex-col  py-[2rem]">
+            <hr className="h-10px text-red-50" />
+            <Link href={"/store"}>
+              <div className="flex items-center">
+                <div className="">Store: {product.store}</div>
+                <FiArrowRight />
+              </div>
+            </Link>
 
-        <div className=" bg-white md:ml-5 p-4 ">
-          {rating ? (
-            <p className="flex items-center text-[2rem]">
-              <p>Rating:</p>{" "}
-              <Rating
-                name="half-rating-read"
-                defaultValue={0}
-                precision={1}
-                value={productRating}
-                onChange={(event, newValue) => {
-                  handleRating(newValue);
-                }}
-              />
-            </p>
-          ) : (
-            <p className="flex flex-col gap-5 text-[2rem]">
-              Leave your Review
-              <Rating
-                name="half-rating-read"
-                defaultValue={0}
-                precision={0.5}
-                value={0}
-                onChange={(event, newValue) => {
-                  handleRating(newValue);
-                }}
-              />
-            </p>
-          )}
-          <div className="flex flex-col mt-4 text-[1.5rem] gap-5">
-            <p>Comments:</p>
-            <div className=" h-[10rem] overflow-scroll  bg-slate-100 p-4 flex flex-col gap-5">
-              {allcomment ? (
-                allcomment.map((comment) => (
-                  <div key={comment._id}>
-                    <p>{comment.comment}</p>
-                    <hr className=" border-1 border-gray-500" />
-                  </div>
-                ))
-              ) : (
-                <div>Be the first one to comment</div>
-              )}
+            <div className="flex flex-col ">
+              {/* product raing for medium */}
+              <p className=" text-[1rem] py-2 ">Brand: {product.brand}</p>
+              <p className="flex gap-2    ">
+                Description:<p className="italic">
+                {product.description}
+                </p>
+              </p>
             </div>
-
-            <input
-              type="text"
-              placeholder="Leave your commment"
-              value={comment}
-              ref={com}
-              onChange={(e) => {
-                setComment(e.target.value);
+          </div>
+        </div>
+      </div>
+      <div className=" bg-white md:ml-5 p-3 md:p-[10rem] ">
+        {rating ? (
+          <p className="flex items-center text-[2rem]">
+            <p>Rating:</p>{" "}
+            <Rating
+              name="half-rating-read"
+              defaultValue={0}
+              precision={1}
+              value={productRating}
+              onChange={(event, newValue) => {
+                handleRating(newValue);
               }}
-              name=""
-              id="comment"
-              className="border-2 p-3 py-9"
             />
-            <button
-              className="bg-[#f57224] text-white p-2 mb-[3rem] rounded-md"
-              onClick={handleComment}
-            >
-              Submit
-            </button>
+          </p>
+        ) : (
+          <p className="flex flex-col gap-5 text-[2rem]">
+            Leave your Review
+            <Rating
+              name="half-rating-read"
+              defaultValue={0}
+              precision={0.5}
+              value={0}
+              onChange={(event, newValue) => {
+                handleRating(newValue);
+              }}
+            />
+          </p>
+        )}
+        <div className="flex flex-col mt-4 text-[1.5rem] pb-16 gap-5">
+         
+
+          <input
+            type="text"
+            placeholder="Leave your commment"
+            value={comment}
+            ref={com}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
+            name=""
+            id="comment"
+            className="border-b-2 p-3 "
+          />
+          <button
+            className="bg-[#f57224] text-white absolute right-8 p-2 mb-[3rem] rounded-lg"
+            onClick={handleComment}
+          >
+            Submit
+          </button>
+          <p>Comments:</p>
+          <div className=" h-[10rem] overflow-scroll scroll-auto   bg-slate-50 p-4 flex flex-col gap-5">
+            {allcomment ? (
+              allcomment.map((comment) => (
+                <div key={comment._id} className='flex gap-3 items-center'>
+                  <BsPersonCircle/>
+                  <p>{comment.comment}</p>
+                  <hr className=" border-1 border-gray-200" />
+                </div>
+              ))
+            ) : (
+              <div>Be the first one to comment</div>
+            )}
           </div>
         </div>
       </div>

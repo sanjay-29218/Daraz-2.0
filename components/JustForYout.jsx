@@ -5,7 +5,7 @@ import ProductBox from "./ProductBox";
 
 const JustForYout = ({ products,store,addToCartHandler }) => {
   return (
-    <div className=" mt-[2rem]   md:pb-[10rem] md:px-[10rem]" id="forYou">
+    <div className=" my-[3rem]   md:pb-[10rem] md:px-[10rem]" id="forYou">
       <h1 className="text-[2rem] mb-5">Just For You</h1>
       <Swiper
         spaceBetween={10}

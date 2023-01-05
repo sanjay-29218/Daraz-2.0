@@ -13,7 +13,7 @@ const ProductBox = ({product,addToCartHandler}) => {
     <div className="flex flex-col md:w-[20rem] bg-white p-2 md:p-3 hover:shadow-lg  ">
       <Link href={`product/${product.slug}`}>
         <img src={product.image} alt="" />
-        <p className="md:text-[1.2rem]">{product.description}</p>
+        <p className="md:text-[1.2rem]">{product.name}</p>
         <p className="text-[#F57224] md:text-[1.5rem]">
           Rs {product.discountedPrice}
         </p>
@@ -27,7 +27,8 @@ const ProductBox = ({product,addToCartHandler}) => {
           
           <p>{product.id}</p>
         </div>
-        <Stack spacing={1}>
+       <div className="hidden md:block">
+       <Stack spacing={1} >
           <Rating
             name="half-rating-read"
             defaultValue={product.rating}
@@ -35,7 +36,10 @@ const ProductBox = ({product,addToCartHandler}) => {
             readOnly
           />
         </Stack>
-        <Cartsection product={product} addToCartHandler={addToCartHandler}/>
+       </div>
+        <div className="hidden md:block">
+        <Cartsection  product={product} addToCartHandler={addToCartHandler}/>
+        </div>
       </Link>
       
     </div>

@@ -66,9 +66,9 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   await db.connect();
   const products = await Product.find().lean();
-  const user = await User.findOne({ email: session.user.email }).lean();
-  let store;
+  let store,user;
   if (session) {
+    user = await User.findOne({ email: session.user.email }).lean();
     store = await Seller.findOne({ user: user._id }).lean();
   }
   return {

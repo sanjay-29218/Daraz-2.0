@@ -276,7 +276,7 @@ const Cart = (props) => {
                       <div key={storeitem._id}>
                         <hr />
 
-                        <div className="md:grid md:grid-cols-[10px_1fr_1fr_20px] flex gap-3 grid-rows-1 md:gap-2 md:p-4 items-center">
+                        <div className="md:grid md:grid-cols-[10px_1fr_1fr_20px] flex gap-3 grid-rows-1 md:gap-2 md:p-4 p-2 items-center">
                           <input
                             type="checkbox"
                             name={store}
@@ -428,5 +428,6 @@ const Cart = (props) => {
     </div>
   );
 };
+
 
 export default dynamic(() => Promise.resolve(Cart), { ssr: false });

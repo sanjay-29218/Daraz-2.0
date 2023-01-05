@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import { GrGoogle } from "react-icons/gr";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Login = (props) => {
   const { data: session } = useSession();
@@ -42,6 +43,23 @@ const Login = (props) => {
       toast.error(error.message);
     }
   };
+  const handlePassword = ()=>{
+    const password = document.getElementById("password");
+    const visibleicon = document.getElementById("visibleicon");
+    const invisibleicon = document.getElementById("invisibleicon");
+
+    if(password.type === "password"){
+      password.type = "text";
+      visibleicon.style.display = "block";
+      invisibleicon.style.display = "none";
+    }else{    
+      visibleicon.style.display = "none";
+      invisibleicon.style.display = "block";
+      password.type = "password";
+      
+      
+    }
+  }
   return (
     <div className="bg-gray-200 h-screen ">
       <Navbardetail />
@@ -88,7 +106,8 @@ const Login = (props) => {
                     Password
                   </label>
 
-                  <input
+                <div className="flex gap-2 items-center ">
+                <input
                     type="password"
                     id="password"
                     placeholder="********"
@@ -105,6 +124,8 @@ const Login = (props) => {
                       minLength: 3,
                     })}
                   />
+                  <AiFillEye id="visibleicon" className="text-[1.5rem]" onClick={()=>{handlePassword()}}/><AiFillEyeInvisible id="invisibleicon" className="hidden text-[1.5rem]" onClick={()=>{handlePassword()}}/>
+                </div>
                   {errors.password && (
                     <p className="text-red-500">{errors.password.message}</p>
                   )}

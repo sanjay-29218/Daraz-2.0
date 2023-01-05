@@ -9,7 +9,7 @@ export default function Example({session,href,logoutCLickHandler}) {
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="inline-flex w-full justify-center rounded-md   text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-            {session.user.image ? (
+            {session.user.image!=='f' ? (
               console.log(session.user.image),
             <img src={session.user.image} className='rounded-full h-7' alt="..." />
             ) : (

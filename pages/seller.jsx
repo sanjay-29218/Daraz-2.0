@@ -191,12 +191,12 @@ const Seller = ({ store, products }) => {
       ) : (
         <div className="p-4 min-h-screen bg-slate-200">
           <div className="flex justify-between"><p className="text-[2rem] ">Store: {store.store}</p>
-          <Link href={'/sellerorder'}><div className="btn cursor-pointer">See orders</div></Link>
+          <Link href={'/sellerorder'}><div className="btn cursor-pointer ">See orders</div></Link>
           </div>
           <p className="text-[2rem] mb-4  ">Products:</p>
           <div className="flex flex-wrap items-stretch gap-3 ">
           {products.map((product) => (
-            <div key={product._id} className="flex  flex-col grow-1 md:w-[20rem]    bg-white p-2 md:p-3 hover:shadow-lg  ">
+            <div key={product._id} className="flex h-fit flex-col md:w-[20rem]    bg-white p-2 md:p-3 hover:shadow-lg  ">
               <Link href={`updateproduct/${product._id}`}>
                 <p className="p-3 text-lg font-bold">{product.name}</p>
                 <img className="w-[20rem] h-[20rem] object-contain" src={product.image} alt="" />
@@ -229,7 +229,7 @@ const Seller = ({ store, products }) => {
             </div>
           ))}
           <button
-            className="w-[20rem]  text-[5rem] cursor-pointer text-xl bg-slate-100 hover:bg-slate-300"
+            className="md:w-[20rem] w-full text-[5rem] cursor-pointer  bg-slate-100 hover:bg-slate-300"
             onClick={() => {
               handelAddProduct();
             }}
