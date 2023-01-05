@@ -66,7 +66,7 @@ const ProductScreen = (props) => {
     setValue("city", shippingAddress?.city);
     setValue("street", shippingAddress?.street);
     // setValue("country",countryValue);
-  }, []);
+  }, [setValue,shippingAddress?.fullname, shippingAddress?.mobile, shippingAddress?.postal, shippingAddress?.city, shippingAddress?.street]);
   // router.push("/payment");
   return (
     <div>

@@ -51,7 +51,7 @@ const Seller = ({ store, products }) => {
   useEffect(() => {
     setValue("fullname", user?.name);
     setValue("email", user?.email);
-  }, []);
+  }, [user?.name, user?.email]);
   return (
     <div>
       <Navbardetail isHome />

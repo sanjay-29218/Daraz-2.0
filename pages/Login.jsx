@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import { GrGoogle } from "react-icons/gr";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = (props) => {
   const { data: session } = useSession();
@@ -148,7 +149,7 @@ const Login = (props) => {
                     <p>Login with Google</p>
                   </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-3">
+                <p className="text-[1.5rem] text-gray-500 mt-3">
                   Don&apos;t have an account &#63;{" "}
                   <Link href={`/signup?redirect=${redirect || "/"}`}>
                     Sign Up

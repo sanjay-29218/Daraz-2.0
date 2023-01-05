@@ -55,7 +55,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   };
   useEffect(() => {
     if (productRating) {
-      setProductRating(rating.rating);
+      setProductRating(rating?.rating);
       setProductNumReviews(product.numReviews);
       setAllProductRating(product.rating);
     }
@@ -123,6 +123,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   return (
     <div className="h-screen   bg-gray-50 ">
       <Navbardetail isHome={true} />
+      <ToastContainer/>
       <div className="md:grid md:grid-cols-3  gird grid-rows-1 ">
         {/* image part */}
         <div className="p-10 col-span-1  bg-white">
@@ -156,7 +157,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
           {/* product raing */}
           <span className="flex  justify-center gap-1 py-2 md:hidden   ">
             <FcRating className="text-[2rem]" />
-            {product.rating}/5
+            {Math.round(allProductRating * 10) / 10}/5 
           </span>
           {/* detail description */}
           <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[2rem] border rounded-lg  flex flex-col  py-[2rem]">
@@ -246,9 +247,13 @@ const ProductDetails = ({ product, rating, user, comments }) => {
           </div>
         </div>
       </div>
-      <div className=" bg-white md:ml-5 p-3 md:p-[10rem] ">
+      <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
+            Product Reviews
+          </p>
+          <hr />
+      <div className=" bg-white md:ml-5 p-3 md:px-[10rem] md: ">
         {rating ? (
-          <p className="flex items-center text-[2rem]">
+          <p className="flex items-center justify-center text-[2rem]">
             <p>Rating:</p>{" "}
             <Rating
               name="half-rating-read"
@@ -261,8 +266,8 @@ const ProductDetails = ({ product, rating, user, comments }) => {
             />
           </p>
         ) : (
-          <p className="flex flex-col gap-5 text-[2rem]">
-            Leave your Review
+          <p className="flex justify-center gap-5 text-[2rem] ">
+            <p className="text-lg">Rating:</p>
             <Rating
               name="half-rating-read"
               defaultValue={0}
@@ -279,7 +284,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
 
           <input
             type="text"
-            placeholder="Leave your commment"
+            placeholder="Leave your comment here"
             value={comment}
             ref={com}
             onChange={(e) => {
@@ -287,10 +292,10 @@ const ProductDetails = ({ product, rating, user, comments }) => {
             }}
             name=""
             id="comment"
-            className="border-b-2 p-3 "
+            className="border-b-2 w-[70%] md:w-full focus:outline-none p-3 text-sm md:text-xl"
           />
           <button
-            className="bg-[#f57224] text-white absolute right-8 p-2 mb-[3rem] rounded-lg"
+            className="bg-[#f57224] text-white text-sm md:text-lg absolute right-8  p-2 md:mb-[3rem] rounded-lg"
             onClick={handleComment}
           >
             Submit

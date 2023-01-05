@@ -30,6 +30,8 @@ const Homepage = ({ products, store }) => {
       // const qty = existItem ? existItem.qty + 1 : 1;
       toast.success("Product added to cart");
       dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
+      dispatch({ type: "CART_RESET_SELECTED_ITEMS" });
+      dispatch({ type: "CART_ADD_SELECTED_ITEMS", payload:{ ...product,qty:1} });
     }
   };
 
