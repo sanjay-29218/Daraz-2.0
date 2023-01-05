@@ -306,6 +306,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
               allcomment.map((comment) => (
                 <div key={comment._id} className='flex gap-3 items-center'>
                   <BsPersonCircle/>
+                  <p>{comment.user.image}</p>
                   <p>{comment.comment}</p>
                   <hr className=" border-1 border-gray-200" />
                 </div>
@@ -339,7 +340,7 @@ export const getServerSideProps = async (context) => {
       rating = await RatingModel.findOne({
         $and: [{ product: product._id }, { user: user._id }],
       }).lean();
-      comments = await Comment.find({ product: product._id }).lean();
+      comments = await Comment.find({ product: product._id }).populate('user').lean();
     }
   }
   // rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
