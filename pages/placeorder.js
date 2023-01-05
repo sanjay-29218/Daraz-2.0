@@ -79,7 +79,7 @@ const Placeorder = () => {
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/orders/neworder", {
+      const { data } = await axios.post("/api/neworder/neworder", {
         orderItems: selectedCartItems,
         shippingAddress,
         paymentMethod,
