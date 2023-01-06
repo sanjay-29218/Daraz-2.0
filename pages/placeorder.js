@@ -169,7 +169,7 @@ const Placeorder = () => {
                     {selectedCartItems.map((storeitem, i) => {
                       if (storeitem.store === store) {
                         return (
-                          <div key={storeitem.id}>
+                          <div key={storeitem._id}>
                             <hr />
                             {/* item description */}
                             <div className="md:grid flex  grid-cols-[1fr_1fr] grid-rows-1   gap-2 p-4 ">
@@ -220,7 +220,4 @@ const Placeorder = () => {
 
 export default dynamic(() => Promise.resolve(Placeorder), { ssr: false });
 Placeorder.auth = true;
-export async function getServersideProps(context) {
-  const session = await getSession(context);
-  return { props: {} };
-}
+

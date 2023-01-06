@@ -3,6 +3,7 @@ import Order from '../../../models/Order';
 import User from '../../../models/User';
 import db from '../../../utils/db';
 
+
 const handler = async(req,res) => {
     console.log(req);
     const session = await getSession({ req });
@@ -19,6 +20,7 @@ const handler = async(req,res) => {
         // user: user.email,
     });
     const order = await newOrder.save();
+    await db.disconnect();
     res.status(201).send(order);
 
 }

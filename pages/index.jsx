@@ -18,22 +18,10 @@ import User from "../models/User";
 const Homepage = ({ products, store }) => {
   const { state, dispatch } = useContext(Store);
 
-  const addToCartHandler = async (product) => {
-    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
-    const data = await axios.get(`/api/products/${product._id}`);
-    console.log(data);
-    const qty = existItem ? existItem.qty + 1 : 1;
+  
 
-    if (product.countInStock < qty) {
-      return toast.error("Sorry, Product is out of stock");
-    } else {
-      // const qty = existItem ? existItem.qty + 1 : 1;
-      toast.success("Product added to cart");
-      dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
-      dispatch({ type: "CART_RESET_SELECTED_ITEMS" });
-      dispatch({ type: "CART_ADD_SELECTED_ITEMS", payload:{ ...product,qty:1} });
-    }
-  };
+
+
 
   return (
     <>
@@ -49,7 +37,7 @@ const Homepage = ({ products, store }) => {
           <Main
             products={products}
             store={store}
-            addToCartHandler={addToCartHandler}
+            
           />
         </main>
         <section>

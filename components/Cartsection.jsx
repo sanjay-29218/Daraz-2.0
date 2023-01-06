@@ -4,8 +4,35 @@ import { FaStore } from "react-icons/fa";
 import { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-const Cartsection = ({ product, addToCartHandler }) => {
-  const router = useRouter();
+import { Store } from "../utils/store";
+import { Toast } from "react-toastify/dist/components";
+const Cartsection = ({ product}) => {
+  const { state, dispatch } = useContext(Store);
+  const addToCartHandler = async (product) => {
+    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
+    const qty = existItem ? existItem.qty + 1 : 1;
+
+    if (product.countInStock < qty) {
+      
+    } else {
+      // const qty = existItem ? existItem.qty + 1 : 1;
+      
+      dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
+     
+    }
+  };
+
+  const handleBuyNow = async (product) => {
+    if(product.countInStock === 0){
+      return toast.error("Sorry, Product is out of stock");
+    }
+    else{
+      dispatch({ type: "CART_RESET_SELECTED_ITEMS" });
+      dispatch({ type: "CART_ADD_SELECTED_ITEMS", payload:{ ...product,qty:1} });
+    }
+  }
+
+
   return (
     <div className="flex  fixed md:static bottom-0  bg-white w-screen md:w-full h-[3rem] md:mt-[1rem]   ">
       <div className="flex text-[1.5rem] items-center  text-[#F57224] ">
@@ -23,7 +50,7 @@ const Cartsection = ({ product, addToCartHandler }) => {
        <Link href={'Login?redirect=/shipping'}>
        <div
           onClick={() => {
-            addToCartHandler(product);
+            handleBuyNow(product);
 
           }}
           className="hover:cursor-pointer  bg-gradient-to-r font-bold text-white  from-cyan-500 to-blue-500 grow-[2] p-2 h-10  md:skew-x-0 -skew-x-12"
@@ -41,7 +68,6 @@ const Cartsection = ({ product, addToCartHandler }) => {
           </div>
         </Link>
       </div>
-      {/* <ToastContainer /> */}
     </div>
   );
 };

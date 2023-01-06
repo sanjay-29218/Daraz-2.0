@@ -48,6 +48,7 @@ if(doc._id){
   if(doc.product){
   doc.product = doc.product.toString();
   }
+
   return doc;
 }
 

@@ -23,8 +23,9 @@ import Comment from "../../models/Comment";
 import { Rating } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { BsPersonCircle } from "react-icons/bs";
+import { serialize } from "bson";
 const ProductDetails = ({ product, rating, user, comments }) => {
-  const { state, dispatch } = useContext(Store);
+  
   const com = useRef();
   const [productRating, setProductRating] = useState(rating?.rating || 0);
   const [productNumReviews, setProductNumReviews] = useState(
@@ -37,22 +38,10 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   const [comment, setComment] = useState("");
   const [allcomment, setAllComment] = useState(comments);
   console.log(allcomment);
+  console.log(product);
 
-  // Handling the add to cart functionality
-  const addToCartHandler = async (product) => {
-    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
-    const data = await axios.get(`/api/products/${product._id}`);
+  
 
-    const qty = existItem ? existItem.qty + 1 : 1;
-
-    if (product.countInStock < qty) {
-      return toast.error("Sorry, Product is out of stock");
-    } else {
-      // const qty = existItem ? existItem.qty + 1 : 1;
-      toast.success("Product added to cart");
-      dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
-    }
-  };
   useEffect(() => {
     if (productRating) {
       setProductRating(rating?.rating);
@@ -111,7 +100,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
         productid: product._id,
         userid: user._id,
       });
-      setAllComment([...allcomment, { comment: comment }]);
+      setAllComment([...allcomment, { comment: comment, user: user.name }]);
       setComment("");
       toast.success("Comment added successfully");
     }
@@ -123,7 +112,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   return (
     <div className="h-screen   bg-gray-50 ">
       <Navbardetail isHome={true} />
-      <ToastContainer/>
+      <ToastContainer />
       <div className="md:grid md:grid-cols-3  gird grid-rows-1 ">
         {/* image part */}
         <div className="p-10 col-span-1  bg-white">
@@ -157,7 +146,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
           {/* product raing */}
           <span className="flex  justify-center gap-1 py-2 md:hidden   ">
             <FcRating className="text-[2rem]" />
-            {Math.round(allProductRating * 10) / 10}/5 
+            {Math.round(allProductRating * 10) / 10}/5
           </span>
           {/* detail description */}
           <div className="bg-white  w-screen md:w-full items-start px-4 md:m-0 md:mt-[2rem]    mb-[2rem] border rounded-lg  flex flex-col  py-[2rem]">
@@ -215,14 +204,14 @@ const ProductDetails = ({ product, rating, user, comments }) => {
               <section className="hidden md:block">
                 <Cartsection
                   product={product}
-                  addToCartHandler={addToCartHandler}
+                  
                 />
               </section>
             </div>
           </div>
         </div>
         <div className="flex-col h-full  gap-5 justify-center bg-white items-center pt-2 md:p-4 ">
-        <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
+          <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
             Product Details
           </p>
           {/* detail description */}
@@ -238,22 +227,20 @@ const ProductDetails = ({ product, rating, user, comments }) => {
             <div className="flex flex-col ">
               {/* product raing for medium */}
               <p className=" text-[1rem] py-2 ">Brand: {product.brand}</p>
-              <p className="flex gap-2    ">
-                Description:<p className="italic">
-                {product.description}
-                </p>
-              </p>
+              <div className="flex gap-2    ">
+                Description:<p className="italic">{product.description}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <p className=" md:text-[1.5rem] text-center  md:self-start text-[1.5rem] font-bold uppercase  ">
-            Product Reviews
-          </p>
-          <hr />
+      <p className=" md:text-[1.5rem] text-center  md:self-start md:my-[2rem] text-[1.5rem] font-bold uppercase  ">
+        Product Reviews
+      </p>
+      <hr />
       <div className=" bg-white md:ml-5 p-3 md:px-[10rem] md: ">
         {rating ? (
-          <p className="flex items-center justify-center text-[2rem]">
+          <div className="flex items-center justify-center text-[2rem]">
             <p>Rating:</p>{" "}
             <Rating
               name="half-rating-read"
@@ -264,9 +251,9 @@ const ProductDetails = ({ product, rating, user, comments }) => {
                 handleRating(newValue);
               }}
             />
-          </p>
+          </div>
         ) : (
-          <p className="flex justify-center gap-5 text-[2rem] ">
+          <div className="flex justify-center gap-5 text-[2rem] ">
             <p className="text-lg">Rating:</p>
             <Rating
               name="half-rating-read"
@@ -277,11 +264,9 @@ const ProductDetails = ({ product, rating, user, comments }) => {
                 handleRating(newValue);
               }}
             />
-          </p>
+          </div>
         )}
         <div className="flex flex-col mt-4 text-[1.5rem] pb-16 gap-5">
-         
-
           <input
             type="text"
             placeholder="Leave your comment here"
@@ -304,10 +289,11 @@ const ProductDetails = ({ product, rating, user, comments }) => {
           <div className=" h-[10rem] overflow-scroll scroll-auto   bg-slate-50 p-4 flex flex-col gap-5">
             {allcomment ? (
               allcomment.map((comment) => (
-                <div key={comment._id} className='flex gap-3 items-center'>
-                  <BsPersonCircle/>
-                  <p>{comment.user.image}</p>
-                  <p>{comment.comment}</p>
+                <div key={comment._id} className="flex gap-3 items-center">
+                  <BsPersonCircle />
+                  {console.log(comment)}
+                  <p className="text-sm font-bold">{comment.user}</p>
+                  <p className="text-sm ">{comment.comment}</p>
                   <hr className=" border-1 border-gray-200" />
                 </div>
               ))
@@ -318,7 +304,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
         </div>
       </div>
       <section className="md:hidden">
-        <Cartsection product={product} addToCartHandler={addToCartHandler} />
+        <Cartsection product={product}  />
       </section>
     </div>
   );
@@ -331,7 +317,7 @@ export const getServerSideProps = async (context) => {
   const { slug } = params;
   const session = await getSession(context);
   await db.connect();
-  let product, user, rating, comments;
+  let product, user, rating, comments, serializedcomments;
   if (session) {
     product = await Product.findOne({ slug: slug }).lean();
 
@@ -340,9 +326,18 @@ export const getServerSideProps = async (context) => {
       rating = await RatingModel.findOne({
         $and: [{ product: product._id }, { user: user._id }],
       }).lean();
-      comments = await Comment.find({ product: product._id }).populate('user').lean();
+      comments = await Comment.find({ product: product._id })
+        .populate("user")
+        .lean();
+      serializedcomments = comments.map((comment) => {
+        return {
+          ...comment,
+          user: comment.user.name,
+        };
+      });
     }
   }
+
   // rating= await RatingModel.findOne({$and:[{product:product._id},{user:user._id}]}).lean();
   await db.disconnect();
   return {
@@ -350,7 +345,9 @@ export const getServerSideProps = async (context) => {
       user: user ? db.convertDocToObj(user) : null,
       product: product ? db.convertDocToObj(product) : null,
       rating: rating ? db.convertDocToObj(rating) : null,
-      comments: comments ? comments.map(db.convertDocToObj) : null,
+      comments: serializedcomments
+        ? serializedcomments.map(db.convertDocToObj)
+        : null,
     },
   };
 };

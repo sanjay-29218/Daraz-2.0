@@ -5,7 +5,7 @@ import data from "../utils/flashdata";
 import ProductBox from "./ProductBox";
 import db from "../utils/db";
 // import Product from "../models/ProductM"
-const FlashSale = ({ products, store, addToCartHandler }) => {
+const FlashSale = ({ products, store }) => {
   console.log(store)
   return (
     <div
@@ -21,7 +21,7 @@ const FlashSale = ({ products, store, addToCartHandler }) => {
             <ProductBox
               key={product._id}
               product={product}
-              addToCartHandler={addToCartHandler}
+              
             />
           </SwiperSlide>
           ) : null
@@ -30,7 +30,7 @@ const FlashSale = ({ products, store, addToCartHandler }) => {
             <ProductBox
               key={product._id}
               product={product}
-              addToCartHandler={addToCartHandler}
+              
             />
           </SwiperSlide>
         )

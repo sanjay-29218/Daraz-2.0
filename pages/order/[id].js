@@ -53,7 +53,8 @@ const OrderScreen = () => {
     updatedAt,
     paidAt,
   } = order;
-  useMemo(() => {
+  console.log(shippingAddress)
+  useEffect(() => {
     const fetchOrder = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
@@ -163,7 +164,7 @@ const OrderScreen = () => {
                   Order Summary{" "}
                 </div>
                 <hr />
-                <p className="md:flex gap-[2rem] hidden  items-center justify-between font-bold">
+                <div className="md:flex gap-[2rem] hidden  items-center justify-between font-bold">
                   Payment Method : {paymentMethod}
                   {isPaid ? (
                     <div className="font-bold text-green-400">
@@ -172,7 +173,7 @@ const OrderScreen = () => {
                   ) : (
                     <div className="font-bold text-[#f85300] ">Not Paid</div>
                   )}
-                </p>
+                </div>
 
                 <div className="font-bold md:block hidden">
                   Items Total :{itemsPrice}
@@ -245,7 +246,7 @@ const OrderScreen = () => {
                       {order.orderItems.map((storeitem, i) => {
                         if (storeitem.store === store) {
                           return (
-                            <div key={storeitem.id}>
+                            <div key={storeitem._id}>
                               <hr />
 
                               <div className="grid grid-cols-[1fr_1fr] grid-rows-1   gap-2 p-4 ">
