@@ -5,7 +5,6 @@ import { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Store } from "../utils/store";
-import { Toast } from "react-toastify/dist/components";
 const Cartsection = ({ product}) => {
   const { state, dispatch } = useContext(Store);
   const addToCartHandler = async (product) => {

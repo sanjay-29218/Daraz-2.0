@@ -40,7 +40,7 @@ const ProductBox = ({product,addToCartHandler}) => {
         </Stack>
        </div>
         <div className="hidden md:block">
-        <Cartsection  product={product} />
+        <Cartsection  product={product} addToCartHandler={addToCartHandler}/>
         </div>
         </div>
       

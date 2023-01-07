@@ -25,7 +25,7 @@ import { useEffect, useRef } from "react";
 import { BsPersonCircle } from "react-icons/bs";
 import { serialize } from "bson";
 const ProductDetails = ({ product, rating, user, comments }) => {
-  
+  const { state, dispatch } = useContext(Store);
   const com = useRef();
   const [productRating, setProductRating] = useState(rating?.rating || 0);
   const [productNumReviews, setProductNumReviews] = useState(
@@ -40,7 +40,21 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   console.log(allcomment);
   console.log(product);
 
-  
+  // Handling the add to cart functionality
+  const addToCartHandler = async (product) => {
+    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
+    const data = await axios.get(`/api/products/${product._id}`);
+
+    const qty = existItem ? existItem.qty + 1 : 1;
+
+    if (product.countInStock < qty) {
+      return toast.error("Sorry, Product is out of stock");
+    } else {
+      // const qty = existItem ? existItem.qty + 1 : 1;
+      toast.success("Product added to cart");
+      dispatch({ type: "CART_ADD_ITEM", payload: { ...product, qty: qty } });
+    }
+  };
 
   useEffect(() => {
     if (productRating) {
@@ -204,7 +218,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
               <section className="hidden md:block">
                 <Cartsection
                   product={product}
-                  
+                  addToCartHandler={addToCartHandler}
                 />
               </section>
             </div>
@@ -275,6 +289,11 @@ const ProductDetails = ({ product, rating, user, comments }) => {
             onChange={(e) => {
               setComment(e.target.value);
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleComment();
+              }
+            }}
             name=""
             id="comment"
             className="border-b-2 w-[70%] md:w-full focus:outline-none p-3 text-sm md:text-xl"
@@ -304,7 +323,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
         </div>
       </div>
       <section className="md:hidden">
-        <Cartsection product={product}  />
+        <Cartsection product={product} addToCartHandler={addToCartHandler} />
       </section>
     </div>
   );

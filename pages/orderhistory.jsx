@@ -1,5 +1,4 @@
 import axios from "axios";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Navbardetail from "../components/Navbardetail";
@@ -80,4 +79,4 @@ const Orderhistory = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(Orderhistory), { ssr: false });;
+export default Orderhistory;

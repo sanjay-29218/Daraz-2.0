@@ -81,6 +81,7 @@ const OrderScreen = () => {
     publicKey: "test_public_key_9554da7faed04c2ca62653e8dcbd1aea",
     productIdentity: "1234567890",
     productName: "Drogon",
+    "productUrl": "http://localhost:3000/",
     eventHandler: {
       onSuccess(payload) {
         if (payload) {

@@ -10,11 +10,11 @@ const Main = ({products,addToCartHandler,store}) => {
   return (
     <div>
         {/* Flash sale */}
-        <FlashSale products={products} store = {store} />
+        <FlashSale products={products} store = {store}  addToCartHandler={addToCartHandler}/>
         {/* Categories */}
         <Categories value={false}  />
         {/* just for you */}
-        <JustForYout products={products} store = {store} />
+        <JustForYout products={products} store = {store}  addToCartHandler={addToCartHandler}/>
     </div>
   )
 }
