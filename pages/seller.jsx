@@ -190,7 +190,7 @@ const Seller = ({ store, products }) => {
         </form>
       ) : (
         <div className="p-4 min-h-screen bg-slate-200">
-          <div className="flex justify-between"><p className="text-[2rem] ">Store: {store.store}</p>
+          <div className="flex justify-between"><p className="text-sm md:text-sm ">Store: {store.store}</p>
           <Link href={'/sellerorder'}><div className="btn cursor-pointer ">See orders</div></Link>
           </div>
           <p className="text-[2rem] mb-4  ">Products:</p>
