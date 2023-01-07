@@ -67,16 +67,15 @@ const Login = (props) => {
     }
   };
   return (
-    <div className="bg-gray-200  h-screen ">
+    <div className="bg-gray-200 md:h-screen   ">
       <Navbardetail />
       <ToastContainer postion="bottom-center" limit={1} />
       
-        <div className="text-[3rem] mx-auto w-max translate-x-[-18%] p-4 ">Welcome to <span className="text-[#F57224]"> Daraz 2.0</span></div>
       
-      <div className="flex flex-col">
+      <div className="flex flex-col md:mt-[5rem] ">
         <form action="" onSubmit={handleSubmit(SubmitHandler)}>
           <section className="text-gray-600 body-font flex ">
-            <div className="container px-5 py-3  flex flex-wrap items-center justify-center ">
+            <div className="container px-5   flex flex-wrap items-center justify-center ">
               <div className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col  w-full mt-10 md:mt-0 ">
                 <h2 className="text-gray-900 text-lg font-medium title-font mb-5">
                   Register
@@ -218,8 +217,8 @@ const Login = (props) => {
                 >
                   Register
                 </button>
-                <p className="text-xs text-gray-500 mt-3">
-                  already have an account &#63; <Link href="/Login">Login</Link>
+                <p className="text-md text-gray-500 mt-3">
+                  Already have an account &#63; <Link href="/Login">Login</Link>
                 </p>
               </div>
             </div>
