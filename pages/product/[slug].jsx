@@ -32,6 +32,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
     product?.numReviews || 0
   );
   const session = getSession();
+  
   const [allProductRating, setAllProductRating] = useState(
     product?.rating || 0
   );
@@ -65,7 +66,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   }, [rating, product, comments]);
 
   async function handleRating(newValue) {
-    if (!session) {
+    if (session.user===undefined) {
       return toast.error("Please login to give rating");
     } else {
       if (rating) {
@@ -82,7 +83,6 @@ const ProductDetails = ({ product, rating, user, comments }) => {
         toast.success("Rating updated successfully");
         setProductRating(newValue);
       } else {
-        console.log(product._id, user._id);
         const { data } = await axios.post(`/api/rating/newrating`, {
           rating: newValue,
           productid: product._id,
@@ -339,15 +339,16 @@ export const getServerSideProps = async (context) => {
   const { slug } = params;
   const session = await getSession(context);
   await db.connect();
-  let  user, rating, comments, serializedcomments;
-  const product = await Product.findOne({ slug: slug }).lean();
+  let product,user, rating, comments, serializedcomments;
+   product = await Product.findOne({ slug: slug }).lean();
   if(session){
   user = await User.findOne({ email: session.user.email }).lean();
+  rating = await RatingModel.findOne({
+    $and: [{ product: product._id }, { user: user._id }],
+  }).lean();
   }
   if (product) {
-    rating = await RatingModel.findOne({
-      $and: [{ product: product._id }, { user: user._id }],
-    }).lean();
+    
     comments = await Comment.find({ product: product._id })
       .populate("user")
       .lean();
