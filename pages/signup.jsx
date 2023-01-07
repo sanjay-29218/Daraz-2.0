@@ -29,14 +29,14 @@ const Login = (props) => {
     watch,
     formState: { errors },
   } = useForm();
-  const SubmitHandler = async ({name, email, password }) => {
+  const SubmitHandler = async ({ name, email, password }) => {
     console.log(email, password);
     try {
-       await axios.post("/api/auth/signuphandler", {
+      await axios.post("/api/auth/signuphandler", {
         name,
         email,
         password,
-        });
+      });
       const result = await signIn("credentials", {
         redirect: false,
         email,
@@ -47,6 +47,22 @@ const Login = (props) => {
       }
     } catch (error) {
       toast.error(error.message);
+    }
+  };
+
+  const handlePassword = () => {
+    const password = document.getElementById("password");
+    const visibleicon = document.getElementById("visibleicon");
+    const invisibleicon = document.getElementById("invisibleicon");
+
+    if (password.type === "password") {
+      password.type = "text";
+      visibleicon.style.display = "block";
+      invisibleicon.style.display = "none";
+    } else {
+      visibleicon.style.display = "none";
+      invisibleicon.style.display = "block";
+      password.type = "password";
     }
   };
   return (
@@ -72,9 +88,8 @@ const Login = (props) => {
                     id="name"
                     className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                     placeholder="Enter your name"
-                    {...register('name',{
-                        required:"Please enter your name"
-
+                    {...register("name", {
+                      required: "Please enter your name",
                     })}
                   />
 
@@ -113,18 +128,35 @@ const Login = (props) => {
                   <input
                     type="password"
                     id="password"
+                    placeholder="********"
                     className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                     {...register("password", {
                       required: "Please enter your password",
-                      pattern:
-                      {
-                      value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/,
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/,
 
-                        message:"Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
+                        message:
+                          "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
                       },
                       minLength: 3,
                     })}
                   />
+                  <AiFillEye
+                    id="visibleicon"
+                    className="text-[1.5rem]"
+                    onClick={() => {
+                      handlePassword();
+                    }}
+                  />
+                  <AiFillEyeInvisible
+                    id="invisibleicon"
+                    className="hidden text-[1.5rem]"
+                    onClick={() => {
+                      handlePassword();
+                    }}
+                  />
+
                   {errors.password && (
                     <p className="text-red-500">{errors.password.message}</p>
                   )}
@@ -132,7 +164,7 @@ const Login = (props) => {
                     htmlFor="confirmpassword"
                     className="leading-7 text-sm text-gray-600"
                   >
-                  Confirm  Password
+                    Confirm Password
                   </label>
 
                   <input
@@ -141,13 +173,15 @@ const Login = (props) => {
                     className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                     {...register("password", {
                       required: "Please enter your password",
-                      validate:(value)=>
-                        value===watch('password')||"Password does not match",
-                      pattern:
-                      {
-                      value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/,
+                      validate: (value) =>
+                        value === watch("password") ||
+                        "Password does not match",
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/,
 
-                        message:"Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
+                        message:
+                          "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
                       },
                       minLength: 3,
                     })}
@@ -165,15 +199,13 @@ const Login = (props) => {
                   Register
                 </button>
                 <p className="text-xs text-gray-500 mt-3">
-                  already have an account &#63;{" "}
-                  <Link href="/Login">Login</Link>
+                  already have an account &#63; <Link href="/Login">Login</Link>
                 </p>
               </div>
             </div>
           </section>
         </form>
-        <div>
-        </div>
+        <div></div>
       </div>
     </div>
   );

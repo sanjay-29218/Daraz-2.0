@@ -127,6 +127,10 @@ const OrderScreen = () => {
       let checkout = new KhaltiCheckout(config);
       checkout.show({ amount: totalPrice * 100 });
       if (checkout) {
+        const orderRes = await axios.put(`/api/orders/${orderId}/pay`, {
+          amount: totalPrice,
+          paymentMethod: paymentMethod,
+        });
         Router.push("/orderhistory");
       }
     } else if (!isPaid && paymentMethod === "Cash on Delivery") {
