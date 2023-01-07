@@ -65,7 +65,7 @@ const Login = (props) => {
     <div className="bg-gray-200 h-screen ">
       <Navbardetail />
       <ToastContainer postion="bottom-center" limit={1} />
-      <h1 className="text-center text-[3rem] font-light">Welcome </h1>
+      <div className="text-[3rem] mx-auto w-max translate-x-[-18%] p-4 ">Welcome to <span className="text-[#F57224]"> Daraz 2.0</span></div>
       <div className="flex flex-col">
         <form action="" onSubmit={handleSubmit(SubmitHandler)}>
           <section className="text-gray-600 body-font flex ">

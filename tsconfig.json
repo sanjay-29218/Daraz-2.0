@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Categories.jsx", "pages/api/auth/[...nextauth].js", "pages/_app.jsx", "pages/Login.jsx", "pages/shipping.jsx", "components/Cartsection.jsx", "components/CheckBox.jsx", "components/CheckOutWizard.jsx", "components/Homepage.jsx", "pages/Category.jsx", "pages/Cart.jsx", "pages/index.jsx", "components/FlashSale.jsx", "pages/product/[slug].jsx", "components/ProductBox.jsx", "components/JustForYout.jsx", "components/Navbardetail.jsx", "lib/mongodb.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Categories.jsx", "pages/api/auth/[...nextauth].js", "pages/_app.jsx", "pages/Login.jsx", "pages/shipping.jsx", "components/Cartsection.jsx", "components/CheckBox.jsx", "components/CheckOutWizard.jsx", "components/Homepage.jsx", "pages/Category.jsx", "pages/Cart.jsx", "pages/index.jsx", "components/FlashSale.jsx", "pages/product/[slug].jsx", "components/ProductBox.jsx", "components/JustForYout.jsx", "components/Navbardetail.jsx", "lib/mongodb.js", "components/Footer.jsx"],
   "exclude": ["node_modules"]
 }

@@ -10,6 +10,7 @@ import Product from "../models/Product";
 import Seller from "../models/Seller";
 import User from "../models/User";
 import dynamic from "next/dynamic";
+import {RxCrossCircled} from 'react-icons/rx'
 
 const PAGE_SIZE = 3;
 
@@ -191,7 +192,7 @@ const Search = ({
              rating !== "all" ||
              price !== "all" ? (
                <button onClick={() => router.push("/search")}>
-                 hello
+                 <RxCrossCircled/>
                  {/* <XCircleIcon className="h-5 w-5" /> */}
                </button>
              ) : null}

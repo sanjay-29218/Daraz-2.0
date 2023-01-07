@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import axios from "axios";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Login = (props) => {
   const { data: session } = useSession();
@@ -66,12 +67,12 @@ const Login = (props) => {
     }
   };
   return (
-    <div className="bg-gray-200 h-screen ">
+    <div className="bg-gray-200  h-screen ">
       <Navbardetail />
       <ToastContainer postion="bottom-center" limit={1} />
-      <h1 className="text-center text-[3rem] font-light">
-        Welcome to Daraz 2.0
-      </h1>
+      
+        <div className="text-[3rem] mx-auto w-max translate-x-[-18%] p-4 ">Welcome to <span className="text-[#F57224]"> Daraz 2.0</span></div>
+      
       <div className="flex flex-col">
         <form action="" onSubmit={handleSubmit(SubmitHandler)}>
           <section className="text-gray-600 body-font flex ">
@@ -124,8 +125,8 @@ const Login = (props) => {
                   >
                     Password
                   </label>
-
-                  <input
+                      <div className="flex gap-2">
+                      <input
                     type="password"
                     id="password"
                     placeholder="********"
@@ -157,6 +158,8 @@ const Login = (props) => {
                     }}
                   />
 
+                      </div>
+                 
                   {errors.password && (
                     <p className="text-red-500">{errors.password.message}</p>
                   )}
@@ -167,9 +170,11 @@ const Login = (props) => {
                     Confirm Password
                   </label>
 
+                  <div className="flex gap-2">
                   <input
                     type="password"
                     id="confirmpassword"
+                    placeholder="********"
                     className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                     {...register("password", {
                       required: "Please enter your password",
@@ -186,6 +191,21 @@ const Login = (props) => {
                       minLength: 3,
                     })}
                   />
+                <AiFillEye
+                    id="visibleicon"
+                    className="text-[1.5rem]"
+                    onClick={() => {
+                      handlePassword();
+                    }}
+                  />
+                  <AiFillEyeInvisible
+                    id="invisibleicon"
+                    className="hidden text-[1.5rem]"
+                    onClick={() => {
+                      handlePassword();
+                    }}
+                  />
+                  </div>
                   {errors.password && (
                     <p className="text-red-500">{errors.password.message}</p>
                   )}

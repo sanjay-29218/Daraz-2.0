@@ -12,10 +12,10 @@ import Dropdown from "./Dropdown";
 const Navbardetail = (props) => {
   const { status, data: session } = useSession();
   const [search, setSearch] = useState("");
-  const [cartcount, setCartcount] = useState(0);
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
+  const [cartcount, setCartcount] = useState(0);
   useEffect(() => {
     setCartcount(cart.cartItems.reduce((a, c) => a + c.qty, 0));
   }, [cart.cartItems]);
@@ -70,14 +70,8 @@ const Navbardetail = (props) => {
             <button className=" btn ">SignUp</button>
           </Link>
         )}
-        <Link href={"/Cart"}>
-          <BiCart className="   w-[30px] h-[30px] ml-[20px] " />
-        </Link>
-        {cartcount > 0 && (
-          <span className="ml-1 rounded-full w-5 h-5 bg-[#F57224] text-white text-sm text-center font-semibold absolute right-[30px] top-[20px]">
-            {cartcount}
-          </span>
-        )}
+        
+        
       </div>
       {/* lower part of navbar */}
       <div className="flex justify-evenly items-center pt-3  w-full  md:border-0  ">
