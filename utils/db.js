@@ -3,22 +3,22 @@ import mongoose from 'mongoose';
 const connection = {};
 
 async function connect() {
-  if (connection.isConnected) {
-    console.log('already connected');
-    return;
-  }
-  if (mongoose.connections.length > 0) {
-    connection.isConnected = mongoose.connections[0].readyState;
-    console.log(mongoose.connections)
-    if (connection.isConnected === 1) {
-      console.log('use previous connection');
-      return;
-    }
-    await mongoose.disconnect();
-  }
+  // if (connection.isConnected) {
+  //   console.log('already connected');
+  //   return;
+  // }
+  // if (mongoose.connections.length > 0) {
+  //   connection.isConnected = mongoose.connections[0].readyState;
+  //   console.log(mongoose.connections)
+  //   if (connection.isConnected === 1) {
+  //     console.log('use previous connection');
+  //     return;
+  //   }
+  //   await mongoose.disconnect();
+  // }
   try{
   const db = await mongoose.connect(process.env.MONGODB_URI);
-  connection.isConnected = db.connections[0].readyState;
+  // connection.isConnected = db.connections[0].readyState;
   console.log('connected');
   // const db =  mongoose.connect(process.env.MONGODB_URI);
   // console.log('new connection');
