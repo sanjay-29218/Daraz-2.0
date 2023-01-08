@@ -31,16 +31,14 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   const [productNumReviews, setProductNumReviews] = useState(
     product?.numReviews || 0
   );
-  const session = getSession();
+  
   
   const [allProductRating, setAllProductRating] = useState(
     product?.rating || 0
   );
   const [comment, setComment] = useState("");
   const [allcomment, setAllComment] = useState(comments);
-  console.log(allcomment);
-  console.log(product);
-
+  
   // Handling the add to cart functionality
   const addToCartHandler = async (product) => {
     const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
@@ -66,7 +64,9 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   }, [rating, product, comments]);
 
   async function handleRating(newValue) {
-    if (session.user.name===undefined) {
+    const session = await getSession();
+   
+    if (!session) {
       return toast.error("Please login to give rating");
     } else {
       if (rating) {
@@ -103,6 +103,8 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   }
 
   async function handleComment(e) {
+    const session = await getSession();
+   
     // e.preventDefault();
     if (!session) {
       return toast.error("Please login to give comment");
@@ -313,7 +315,6 @@ const ProductDetails = ({ product, rating, user, comments }) => {
             allcomment.map((comment) => (
               <div key={comment._id} className="flex gap-3 items-center">
                 <BsPersonCircle />
-                {console.log(comment)}
                 <p className="text-sm font-bold">{comment.user}</p>
                 <p className="text-sm ">{comment.comment}</p>
                 <hr className=" border-1 border-gray-200" />
