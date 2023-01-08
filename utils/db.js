@@ -16,9 +16,17 @@ async function connect() {
     }
     await mongoose.disconnect();
   }
+  try{
   const db = await mongoose.connect(process.env.MONGODB_URI);
-  console.log('new connection');
   connection.isConnected = db.connections[0].readyState;
+  console.log('connected');
+  // const db =  mongoose.connect(process.env.MONGODB_URI);
+  // console.log('new connection');
+  // connection.isConnected = db.connections[0].readyState;
+
+  }catch(err){
+    console.log('failed to connect', err)
+  }
 }
 
 async function disconnect() {
