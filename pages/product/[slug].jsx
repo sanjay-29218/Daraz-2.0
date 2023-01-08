@@ -66,7 +66,7 @@ const ProductDetails = ({ product, rating, user, comments }) => {
   }, [rating, product, comments]);
 
   async function handleRating(newValue) {
-    if (session.user===undefined) {
+    if (session.user.name===undefined) {
       return toast.error("Please login to give rating");
     } else {
       if (rating) {
